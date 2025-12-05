@@ -1,0 +1,5 @@
+composer create-project laravel/laravel foodorderbackend
+php artisan install:api
+composer require laravel/sanctum
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+php artisan migrate
