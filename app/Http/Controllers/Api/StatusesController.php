@@ -11,9 +11,18 @@ use Illuminate\Support\Str;
 
 class StatusesController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
-     */
+ * @OA\Get(
+ *     path="/api/v1/statuses",
+ *     summary="Get all statuses",
+ *     tags={"Statuses"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of statuses"
+ *     )
+ * )
+ */
     public function index(Request $request)
     {
         $query = Status::query();
@@ -43,9 +52,31 @@ class StatusesController extends Controller
             ]);
     }
 
+
     /**
-     * Store a newly created resource in storage.
-     */
+ * @OA\Post(
+ *     path="api/v1/statuses",
+ *     summary="Create new status",
+ *     tags={"Statuses"},
+ *
+ *     @OA\RequestBody(
+ *         required=true,
+ *         @OA\JsonContent(
+ *             required={"name"},
+ *             @OA\Property(property="name", type="string", example="Pending")
+ *         )
+ *     ),
+ *
+ *     @OA\Response(
+ *         response=201,
+ *         description="Created"
+ *     ),
+ *     @OA\Response(
+ *         response=422,
+ *         description="Validation error"
+ *     )
+ * )
+ */
     public function store(Request $request)
     {
         // Validate input

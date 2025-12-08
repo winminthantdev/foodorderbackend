@@ -3,3 +3,68 @@ php artisan install:api
 composer require laravel/sanctum
 php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
 php artisan migrate
+
+
+-------------------------------------------------------------------
+
+Add Swagger
+composer require "darkaonline/l5-swagger"
+
+php artisan vendor:publish --provider "L5Swagger\L5SwaggerServiceProvider"
+
+This creates:
+    config/l5-swagger.php
+    storage/api-docs/
+    resources/views/vendor/l5-swagger/
+    public/docs/
+
+
+------------------------------------------------
+
+
+create a file
+
+app/Http/Controllers/SwaggerController.php
+
+
+    <?php
+
+    namespace App\Http\Controllers;
+
+    /**
+    * @OA\Info(
+    *     version="1.0.0",
+    *     title="Food Order API Documentation",
+    *     description="API documentation for your Food Ordering Backend"
+    * )
+    *
+    * @OA\Server(
+    *     url="/api",
+    *     description="API Server"
+    * )
+    */
+    class SwaggerController {}
+
+
+------------------------------------------------
+
+
+in Controller
+
+/**
+ * @OA\Get(
+ *     path="/api/statuses",
+ *     summary="Get all statuses",
+ *     tags={"Statuses"},
+ *     @OA\Response(
+ *         response=200,
+ *         description="List of statuses"
+ *     )
+ * )
+ */
+
+
+------------------------------------------------
+
+php artisan l5-swagger:generate
+
