@@ -1,9 +1,13 @@
 <?php
 
-use App\Http\Controllers\Auth\AuthController;
-use App\Http\Controllers\Auth\AdminAuthController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\Auth\AdminAuthController;
+
+
+use App\Http\Controllers\Api\CategoriesController;
+use App\Http\Controllers\Api\StatusesController;
+use App\Http\Controllers\Api\ProductController;
+use App\Http\Controllers\Api\ProfileController;
 
 Route::prefix('v1')->group(function () {
 
@@ -47,5 +51,15 @@ Route::prefix('v1')->group(function () {
     Route::middleware('auth:admin')->group(function () {
         Route::apiResource('products', ProductController::class);
     });
+
+    Route::resource('/statuses', StatusesController::class);
+
+    /*
+    |--------------------------------------------------------------------------
+    | PUBLIC ROUTES (NO AUTH NEED)
+    |--------------------------------------------------------------------------
+    */
+
+
 
 });
