@@ -21,6 +21,8 @@ class StatusSeeder extends Seeder
             "Off",
             'Online',
             'Offline',
+            'Available',
+            'Busy',
             'Public',
             'Private',
             'Friend Only',

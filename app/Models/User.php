@@ -10,7 +10,7 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use HasFactory;
-    
+
     use HasApiTokens, Notifiable;
     protected $table = 'users';
     protected $primaryKey = 'id';
