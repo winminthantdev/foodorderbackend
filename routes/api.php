@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\Auth\AdminAuthController;
 
 use App\Http\Controllers\Api\CategoriesController;
 use App\Http\Controllers\Api\StatusesController;
+use App\Http\Controllers\Api\StagesController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\ProfileController;
 
@@ -53,6 +54,7 @@ Route::prefix('v1')->group(function () {
     });
 
     Route::resource('/statuses', StatusesController::class);
+    Route::resource('/stages', StagesController::class);
 
     /*
     |--------------------------------------------------------------------------

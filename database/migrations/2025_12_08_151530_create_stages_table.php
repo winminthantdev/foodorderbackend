@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('slug');
+            $table->unsignedBigInteger('status_id');
             $table->timestamps();
         });
     }
