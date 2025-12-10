@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('phone_number')->unique();
-            $table->string('status_id')->default('6');
+            $table->foreignId('status_id')->default(6)->constrained('statuses')->onDelete('cascade');
             $table->decimal('latitude', 10,7)->nullable();
             $table->decimal('longitude', 10,7)->nullable();
             $table->float('rating')->default(5);

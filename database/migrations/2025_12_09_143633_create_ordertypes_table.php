@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('ordertypes', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
+            $table->string('description')->nullable();
+            $table->foreignId('status_id')->default(1)->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
         });
     }

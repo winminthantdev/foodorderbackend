@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('slug');
-            $table->unsignedBigInteger('status_id');
+            $table->foreignId('status_id')->default(3)->constrained('statuses')->onDelete('cascade');
             $table->timestamps();
         });
     }
