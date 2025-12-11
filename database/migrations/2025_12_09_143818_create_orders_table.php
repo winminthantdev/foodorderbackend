@@ -13,6 +13,21 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->constrained("users")->cascadeOnDelete();
+            $table->foreignId('ordertype_id')->constrained("ordertypes")->cascadeOnDelete();
+            $table->foreignId('paymenttype_id')->constrained("paymenttypes")->cascadeOnDelete();
+            $table->foreignId('driver_id')->nullable()->constrained("drivers")->nullOnDelete();
+            $table->foreignId('status_id')->nullable()->constrained("statuses")->nullOnDelete();
+            $table->foreignId('address_id')->nullable()->constrained()->nullOnDelete();
+            $table->decimal('subtotal', 10, 2)->default(0);
+            $table->decimal('discount', 10, 2)->default(0);
+            $table->decimal('delivery_fee', 10, 2)->default(0);
+            $table->decimal('service_fee', 10, 2)->default(0);
+            $table->decimal('total', 10, 2)->default(0);
+            $table->string('transaction_id')->nullable();
+            $table->boolean('is_paid')->default(false);
+            $table->string('order_note')->nullable();
+            $table->timestamp('scheduled_at')->nullable();
             $table->timestamps();
         });
     }

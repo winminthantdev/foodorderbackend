@@ -13,6 +13,15 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->string('name')->unique();
+            $table->string('slug')->nullable();
+            $table->string('image')->nullable();
+            $table->string('description')->nullable();
+            $table->decimal('price',10,2);
+            $table->tinyInteger('rating')->default(5);
+            $table->foreignId('subcategory_id')->constrained('subcategories')->onDelete("cascade");
+            $table->foreignId('category_id')->constrained('categories')->onDelete("cascade");
+            $table->foreignId('status_id')->default(3)->constrained('statuses')->onDelete("cascade");
             $table->timestamps();
         });
     }
