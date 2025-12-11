@@ -11,10 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('variants', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+       Schema::create('variants', function (Blueprint $table) {
+    $table->id();
+    $table->foreignId('menu_id')->constrained('menus')->cascadeOnDelete();
+    $table->string('name');     
+    $table->decimal('extra_price', 10, 2)->default(0);
+    $table->timestamps();
+});
+
     }
 
     /**

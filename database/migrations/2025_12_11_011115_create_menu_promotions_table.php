@@ -13,6 +13,9 @@ return new class extends Migration
     {
         Schema::create('menu_promotions', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('menu_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('promotion_id')->constrained()->cascadeOnDelete();
+            $table->decimal('custom_discount_value',8,2)->nullable();
             $table->timestamps();
         });
     }

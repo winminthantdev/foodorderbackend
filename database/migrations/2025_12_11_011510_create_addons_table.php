@@ -11,10 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('addons', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
+           Schema::create('addons', function (Blueprint $table) {
+                $table->id();
+                $table->string('name');
+                $table->decimal('price', 10, 2);
+                $table->foreignId('status_id')->default(3)->constrained('statuses')->onDelete('cascade');
+                $table->timestamps();
+            });
+
+
     }
 
     /**
