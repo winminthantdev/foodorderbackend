@@ -68,3 +68,40 @@ in Controller
 
 php artisan l5-swagger:generate
 
+------------------------------------------------
+
+
+// php artisan make:controller Api/Admin/AdminStatusesController --api
+// php artisan make:controller Api/Admin/AdminCategoriesController --api
+// php artisan make:controller Api/Admin/AdminSubCategoriesController --api
+// php artisan make:controller Api/Admin/AdminMenusController --api
+// php artisan make:controller Api/Admin/AdminDriversController --api
+// php artisan make:controller Api/Admin/AdminPaymentsController --api
+// php artisan make:controller Api/Admin/AdminPaymentTypesController --api
+// php artisan make:controller Api/Admin/AdminOrdersController --api
+// php artisan make:controller Api/Admin/AdminOrderItemsController --api
+// php artisan make:controller Api/Admin/AdminOrderTypesController --api
+// php artisan make:controller Api/Admin/AdminUserInfosController --api
+// php artisan make:controller Api/Admin/AdminVariantsController --api
+// php artisan make:controller Api/Admin/AdminAddonsController --api
+// php artisan make:controller Api/Admin/AdminMenuAddonsController --api
+// php artisan make:controller Api/Admin/AdminPromotionsController --api
+// php artisan make:controller Api/Admin/AdminStagesController --api
+// php artisan make:controller Api/Admin/AdminUsersControllers --api
+// php artisan make:controller Api/Admin/AdminMenuPromotionsController --api
+
+// php artisan make:controller Api/SubCategoriesController --api
+// php artisan make:controller Api/MenusController --api
+// php artisan make:controller Api/DriversController --api
+// php artisan make:controller Api/CategoriesController --api
+
+// php artisan make:controller Api/User/UserPaymentsController --api
+// php artisan make:controller Api/User/UserPaymentTypesController --api
+// php artisan make:controller Api/User/UserOrdersController --api
+// php artisan make:controller Api/User/UserOrderTypesController --api
+// php artisan make:controller Api/User/UserInfosController --api
+// php artisan make:controller Api/User/UserAddressesController --api
+// php artisan make:controller Api/User/UserPromotionsController --api
+
+
+------------------------------------------------

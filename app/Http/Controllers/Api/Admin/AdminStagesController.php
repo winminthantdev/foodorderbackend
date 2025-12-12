@@ -3,19 +3,19 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\StatusesResource;
-use App\Models\Status;
+use App\Http\Resources\StagesResource;
+use App\Models\Stage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 
-class StatusesController extends Controller
+class AdminStagesController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/v1/statuses",
-     *     summary="Get all statuses",
-     *     tags={"Statuses"},
+     *     path="/v1/stages",
+     *     summary="Get all stages",
+     *     tags={"Stages"},
      *
      *     @OA\Parameter(
      *         name="search",
@@ -24,6 +24,15 @@ class StatusesController extends Controller
      *         required=false,
      *
      *         @OA\Schema(type="string")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="status_id",
+     *         in="query",
+     *         description="Filter by status id",
+     *         required=false,
+     *
+     *         @OA\Schema(type="integer")
      *     ),
      *
      *     @OA\Parameter(
@@ -37,47 +46,52 @@ class StatusesController extends Controller
      *
      *     @OA\Response(
      *         response=200,
-     *         description="List of statuses"
+     *         description="List of stages"
      *     )
      * )
      */
     public function index(Request $request)
     {
-        $query = Status::query();
+        $query = Stage::query();
 
         // Search
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%'.$request->search.'%');
         }
 
+        // Filter example: by status type
+        if ($request->has('status_id') && $request->status_id != '') {
+            $query->where('status_id', $request->status_id);
+        }
+
         // Pagination
         $perPage = $request->get('per_page', 10);
-        $statuses = $query->paginate($perPage);
+        $stages = $query->paginate($perPage);
 
         return response()->json([
-            'data' => StatusesResource::collection($statuses),
+            'data' => StagesResource::collection($stages),
             'meta' => [
-                'current_page' => $statuses->currentPage(),
-                'total_page' => $statuses->lastPage(),
-                'per_page' => $statuses->perPage(),
-                'total' => $statuses->total(),
+                'current_page' => $stages->currentPage(),
+                'total_page' => $stages->lastPage(),
+                'per_page' => $stages->perPage(),
+                'total' => $stages->total(),
             ],
         ], 200);
     }
 
     /**
      * @OA\Post(
-     *     path="/v1/statuses",
+     *     path="/v1/stages",
      *     summary="Create new status",
-     *     tags={"Statuses"},
+     *     tags={"Stages"},
      *
      *     @OA\RequestBody(
      *         required=true,
      *
      *         @OA\JsonContent(
-     *             required={"name"},
-     *
-     *             @OA\Property(property="name", type="string", example="Pending")
+     *             required={"name","status_id"},
+     *             @OA\Property(property="name", type="string", example="Approved"),
+     *             @OA\Property(property="status_id", type= "integer", example= 3)
      *         )
      *     ),
      *
@@ -95,7 +109,8 @@ class StatusesController extends Controller
     {
         // Validate input
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:statuses,name',
+            'name' => 'required|string|max:255|unique:stages,name',
+            'status_id' => 'required|in:3,4',
         ]);
 
         // If validation fails
@@ -108,16 +123,17 @@ class StatusesController extends Controller
         }
 
         try {
-            // Create Status
-            $status = Status::create([
+            // Create Stage
+            $status = Stage::create([
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
+                'status_id' => $request->status_id,
             ]);
 
             return response()->json([
                 'success' => true,
-                'message' => 'Status created successfully',
-                'data' => new StatusesResource($status),
+                'message' => 'Stage created successfully',
+                'data' => new StagesResource($status),
             ], 201);
 
         } catch (\Exception $e) {
@@ -132,15 +148,15 @@ class StatusesController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/v1/statuses/{id}",
+     *     path="/v1/stages/{id}",
      *     summary="Update a status",
-     *     tags={"Statuses"},
+     *     tags={"Stages"},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="Status ID",
+     *         description="Stage ID",
      *
      *         @OA\Schema(type="integer")
      *     ),
@@ -151,18 +167,18 @@ class StatusesController extends Controller
      *         @OA\JsonContent(
      *             required={"name"},
      *
-     *             @OA\Property(property="name", type="string", example="Updated Status Name")
+     *             @OA\Property(property="name", type="string", example="Updated Stage Name")
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Status updated successfully",
+     *         description="Stage updated successfully",
      *
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="Status updated successfully"),
+     *             @OA\Property(property="message", type="string", example="Stage updated successfully"),
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
@@ -175,12 +191,12 @@ class StatusesController extends Controller
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Status not found",
+     *         description="Stage not found",
      *
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Status not found")
+     *             @OA\Property(property="message", type="string", example="Stage not found")
      *         )
      *     ),
      *
@@ -216,18 +232,19 @@ class StatusesController extends Controller
     public function update(Request $request, $id)
     {
         // Find status
-        $status = Status::find($id);
+        $status = Stage::find($id);
 
         if (! $status) {
             return response()->json([
                 'success' => false,
-                'message' => 'Status not found',
+                'message' => 'Stage not found',
             ], 404);
         }
 
         // Validation
         $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255|unique:statuses,name,'.$id,
+            'name' => 'required|string|max:255|unique:stages,name,'.$id,
+            'status_id' => 'required|in:3,4',
         ]);
 
         if ($validator->fails()) {
@@ -242,12 +259,13 @@ class StatusesController extends Controller
             // Update data
             $status->name = $request->name;
             $status->slug = Str::slug($request->name);
+            $status->status_id = $request->status_id;
             $status->save();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Status updated successfully',
-                'data' => new StatusesResource($status),
+                'message' => 'Stage updated successfully',
+                'data' => new StagesResource($status),
             ], 200);
 
         } catch (\Exception $e) {
@@ -261,38 +279,38 @@ class StatusesController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/v1/statuses/{id}",
+     *     path="/v1/stages/{id}",
      *     summary="Delete a status",
-     *     tags={"Statuses"},
+     *     tags={"Stages"},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="Status ID",
+     *         description="Stage ID",
      *
      *         @OA\Schema(type="integer")
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Status deleted successfully",
+     *         description="Stage deleted successfully",
      *
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="Status deleted successfully")
+     *             @OA\Property(property="message", type="string", example="Stage deleted successfully")
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Status not found",
+     *         description="Stage not found",
      *
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Status not found")
+     *             @OA\Property(property="message", type="string", example="Stage not found")
      *         )
      *     ),
      *
@@ -311,14 +329,14 @@ class StatusesController extends Controller
      */
     public function destroy(string $id)
     {
-        // Find Status
-        $status = Status::find($id);
+        // Find Stage
+        $status = Stage::find($id);
 
         // If not found → 404
         if (! $status) {
             return response()->json([
                 'success' => false,
-                'message' => 'Status not found',
+                'message' => 'Stage not found',
             ], 404);
         }
 
@@ -328,7 +346,7 @@ class StatusesController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Status deleted successfully',
+                'message' => 'Stage deleted successfully',
             ], 200);
 
         } catch (\Exception $e) {

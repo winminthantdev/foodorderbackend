@@ -1,67 +1,88 @@
 <?php
 
-use App\Http\Controllers\Api\Auth\AuthController;
-use App\Http\Controllers\Api\Auth\AdminAuthController;
-
-
+// Public Controllers
+use App\Http\Controllers\Api\Admin\AdminAddonsController;
+use App\Http\Controllers\Api\Admin\AdminCategoriesController;
+use App\Http\Controllers\Api\Admin\AdminDriversController;
+use App\Http\Controllers\Api\Admin\AdminMenuAddonsController;
+use App\Http\Controllers\Api\Admin\AdminMenuPromotionsController;
+use App\Http\Controllers\Api\Admin\AdminMenusController;
+use App\Http\Controllers\Api\Admin\AdminOrderItemsController;
+use App\Http\Controllers\Api\Admin\AdminOrdersController;
+use App\Http\Controllers\Api\Admin\AdminOrderTypesController;
+use App\Http\Controllers\Api\Admin\AdminPaymentsController;
+use App\Http\Controllers\Api\Admin\AdminPaymentTypesController;
+use App\Http\Controllers\Api\Admin\AdminPromotionsController;
+use App\Http\Controllers\Api\Admin\AdminSubCategoriesController;
+use App\Http\Controllers\Api\Admin\AdminUserInfosController;
+use App\Http\Controllers\Api\Admin\AdminUsersController;
+use App\Http\Controllers\Api\Admin\AdminVariantsController;
+use App\Http\Controllers\Api\AdminStagesController;
+use App\Http\Controllers\Api\AdminStatusesController;
 use App\Http\Controllers\Api\CategoriesController;
-use App\Http\Controllers\Api\StatusesController;
-use App\Http\Controllers\Api\StagesController;
-use App\Http\Controllers\Api\ProductController;
-use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\DriversController;
+use App\Http\Controllers\Api\MenusController;
+use App\Http\Controllers\Api\SubCategoriesController;
+use App\Http\Controllers\Api\User\UserAddressesController;
+use App\Http\Controllers\Api\User\UserInfosController;
+use App\Http\Controllers\Api\User\UserOrdersController;
+use App\Http\Controllers\Api\User\UserOrderTypesController;
+use App\Http\Controllers\Api\User\UserPaymentsController;
+use App\Http\Controllers\Api\User\UserPaymentTypesController;
+use App\Http\Controllers\Api\User\UserPromotionsController;
 
-Route::prefix('v1')->group(function () {
+// User Controllers
 
-    /*
-    |--------------------------------------------------------------------------
-    | USER AUTH (OAuth + JWT)
-    |--------------------------------------------------------------------------
-    */
-    Route::get('auth/google/redirect', [AuthController::class, 'googleRedirect']);
-    Route::get('auth/google/callback', [AuthController::class, 'googleCallback']);
+// Admin Controllers
 
-    Route::post('auth/register', [AuthController::class, 'register']);
-    Route::post('auth/login', [AuthController::class, 'login']);
-    Route::post('auth/refresh', [AuthController::class, 'refresh']);
-    Route::post('auth/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
+// PUBLIC ROUTES
+Route::prefix('public')->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | USER PROTECTED ROUTES
-    |--------------------------------------------------------------------------
-    */
-    Route::middleware('auth:sanctum')->group(function () {
-        Route::get('profile', [ProfileController::class, 'show']);
-        Route::post('profile/update', [ProfileController::class, 'update']);
-        Route::post('profile/password', [ProfileController::class, 'changePassword']);
-    });
+    Route::get('/categories', [CategoriesController::class, 'index']);
+    Route::get('/subcategories', [SubCategoriesController::class, 'index']);
+    Route::get('/menus', [MenusController::class, 'index']);
+    Route::get('/menus/{id}', [MenusController::class, 'show']);
+    Route::get('/drivers', [DriversController::class, 'index']);
+    Route::get('/drivers/{id}', [DriversController::class, 'show']);
+});
 
-    /*
-    |--------------------------------------------------------------------------
-    | ADMIN LOGIN ONLY (NO REGISTER)
-    |--------------------------------------------------------------------------
-    */
-    Route::post('admin/login', [AdminAuthController::class, 'login']);
-    Route::post('admin/logout', [AdminAuthController::class, 'logout'])->middleware('auth:admin');
+// USER ROUTES
+Route::middleware('auth:sanctum')->prefix('user')->group(function () {
 
-    /*
-    |--------------------------------------------------------------------------
-    | ADMIN PROTECTED ROUTES (ONLY ADMIN CAN UPDATE PRODUCTS)
-    |--------------------------------------------------------------------------
-    */
-    Route::middleware('auth:admin')->group(function () {
-        Route::apiResource('products', ProductController::class);
-    });
+    Route::get('/profile', [UserInfosController::class, 'show']);
+    Route::put('/profile', [UserInfosController::class, 'update']);
 
-    Route::resource('/statuses', StatusesController::class);
-    Route::resource('/stages', StagesController::class);
+    Route::get('/order-types', [UserOrderTypesController::class, 'index']);
 
-    /*
-    |--------------------------------------------------------------------------
-    | PUBLIC ROUTES (NO AUTH NEED)
-    |--------------------------------------------------------------------------
-    */
+    Route::resource('/orders', UserOrdersController::class);
+    Route::resource('/addresses', UserAddressesController::class);
 
+    Route::get('/promotions', [UserPromotionsController::class, 'index']);
 
+    Route::post('/payments', [UserPaymentsController::class, 'store']);
 
+    Route::get('/payment-types', [UserPaymentTypesController::class, 'index']);
+
+});
+
+// ADMIN ROUTES
+Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
+    Route::resource('addons', AdminAddonsController::class);
+    Route::resource('categories', AdminCategoriesController::class);
+    Route::resource('subcategories', AdminSubCategoriesController::class);
+    Route::resource('menus', AdminMenusController::class);
+    Route::resource('drivers', AdminDriversController::class);
+    Route::resource('order-types', AdminOrderTypesController::class);
+    Route::resource('orders', AdminOrdersController::class);
+    Route::resource('order-items', AdminOrderItemsController::class);
+    Route::resource('payments', AdminPaymentsController::class);
+    Route::resource('payment-types', AdminPaymentTypesController::class);
+    Route::resource('promotions', AdminPromotionsController::class);
+    Route::resource('menu-promotions', AdminMenuPromotionsController::class);
+    Route::resource('menu-addons', AdminMenuAddonsController::class);
+    Route::resource('stages', AdminStagesController::class);
+    Route::resource('statuses', AdminStatusesController::class);
+    Route::resource('users', AdminUsersController::class);
+    Route::resource('user-infos', AdminUserInfosController::class);
+    Route::resource('variants', AdminVariantsController::class);
 });
