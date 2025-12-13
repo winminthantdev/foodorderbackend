@@ -106,27 +106,24 @@ php artisan l5-swagger:generate
 ------------------------------------------------
 
 API Resources
-
-
-// php artisan make:resources Admin/StatusesResource
-// php artisan make:resources Admin/StagesResource
-// php artisan make:resources Admin/VariantsResource
-// php artisan make:resources Admin/UserInfosResource
-// php artisan make:resources Admin/UsersResource
-// php artisan make:resources Admin/PromotionsResource
-// php artisan make:resources Admin/PaymentTypesResource
-// php artisan make:resources Admin/PaymentsResource
-// php artisan make:resources Admin/OrderTypesResource
-// php artisan make:resources Admin/OrdersResource
-// php artisan make:resources Admin/OrderItemsResource
-// php artisan make:resources Admin/MenusResource
-// php artisan make:resources Admin/MenuPromotionsResource
-// php artisan make:resources Admin/MenuAddonsResource
-// php artisan make:resources Admin/DriversResource
-// php artisan make:resources Admin/SubCategoriesResource
-// php artisan make:resources Admin/CategoriesResource
-// php artisan make:resources Admin/AddonsResource
-
+// php artisan make:resource Admin/StatusesResource
+// php artisan make:resource Admin/StagesResource
+// php artisan make:resource Admin/VariantsResource
+// php artisan make:resource Admin/UserInfosResource
+// php artisan make:resource Admin/UsersResource
+// php artisan make:resource Admin/PromotionsResource
+// php artisan make:resource Admin/PaymentTypesResource
+// php artisan make:resource Admin/PaymentsResource
+// php artisan make:resource Admin/OrderTypesResource
+// php artisan make:resource Admin/OrdersResource
+// php artisan make:resource Admin/OrderItemsResource
+// php artisan make:resource Admin/MenusResource
+// php artisan make:resource Admin/MenuPromotionsResource
+// php artisan make:resource Admin/MenuAddonsResource
+// php artisan make:resource Admin/DriversResource
+// php artisan make:resource Admin/SubCategoriesResource
+// php artisan make:resource Admin/CategoriesResource
+// php artisan make:resource Admin/AddonsResource
 
 // php artisan make:resource User/PromotionsResource
 // php artisan make:resource User/PaymentTypesResource
@@ -136,7 +133,14 @@ API Resources
 // php artisan make:resource User/AddressesResource
 // php artisan make:resource User/InfosResource
 
-// php artisan make:reource DriversResource
-// php artisan make:reource MenusResource
-// php artisan make:reource CategoriesResource
-// php artisan make:reource SubCategoriesResource
+// php artisan make:resource Public/DriversResource
+// php artisan make:resource Public/MenusResource
+// php artisan make:resource Public/CategoriesResource
+// php artisan make:resource Public/SubCategoriesResource
+
+
+------------------------------------------------
+
+php artisan route:cache
+php artisan route:clear
+ph artisan config:cache

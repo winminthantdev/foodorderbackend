@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\CategoriesResource;
-use App\Models\Stage;
+use App\Http\Resources\Admin\CategoriesResource;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
@@ -29,7 +29,7 @@ class AdminCategoriesController extends Controller
      *     @OA\Parameter(
      *         name="status_id",
      *         in="query",
-     *         description="Filter by status id",
+     *         description="Filter by category id",
      *         required=false,
      *
      *         @OA\Schema(type="integer")
@@ -52,14 +52,14 @@ class AdminCategoriesController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Stage::query();
+        $query = Category::query();
 
         // Search
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%'.$request->search.'%');
         }
 
-        // Filter example: by status type
+        // Filter example: by category type
         if ($request->has('status_id') && $request->status_id != '') {
             $query->where('status_id', $request->status_id);
         }
@@ -82,7 +82,7 @@ class AdminCategoriesController extends Controller
     /**
      * @OA\Post(
      *     path="/v1/categories",
-     *     summary="Create new status",
+     *     summary="Create new category",
      *     tags={"Categories"},
      *
      *     @OA\RequestBody(
@@ -90,7 +90,7 @@ class AdminCategoriesController extends Controller
      *
      *         @OA\JsonContent(
      *             required={"name","status_id"},
-     *             @OA\Property(property="name", type="string", example="Approved"),
+     *             @OA\Property(property="name", type="string", example="Chinese"),
      *             @OA\Property(property="status_id", type= "integer", example= 3)
      *         )
      *     ),
@@ -123,8 +123,8 @@ class AdminCategoriesController extends Controller
         }
 
         try {
-            // Create Stage
-            $status = Stage::create([
+            // Create Category
+            $category = Category::create([
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
                 'status_id' => $request->status_id,
@@ -132,15 +132,15 @@ class AdminCategoriesController extends Controller
 
             return response()->json([
                 'success' => true,
-                'message' => 'Stage created successfully',
-                'data' => new CategoriesResource($status),
+                'message' => 'Category created successfully',
+                'data' => new CategoriesResource($category),
             ], 201);
 
         } catch (\Exception $e) {
             // Handle other server errors
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create status',
+                'message' => 'Failed to create category',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -149,14 +149,14 @@ class AdminCategoriesController extends Controller
     /**
      * @OA\Put(
      *     path="/v1/categories/{id}",
-     *     summary="Update a status",
+     *     summary="Update a category",
      *     tags={"Categories"},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="Stage ID",
+     *         description="Category ID",
      *
      *         @OA\Schema(type="integer")
      *     ),
@@ -167,18 +167,18 @@ class AdminCategoriesController extends Controller
      *         @OA\JsonContent(
      *             required={"name"},
      *
-     *             @OA\Property(property="name", type="string", example="Updated Stage Name")
+     *             @OA\Property(property="name", type="string", example="Updated Category Name")
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Stage updated successfully",
+     *         description="Category updated successfully",
      *
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="Stage updated successfully"),
+     *             @OA\Property(property="message", type="string", example="Category updated successfully"),
      *             @OA\Property(
      *                 property="data",
      *                 type="object",
@@ -191,12 +191,12 @@ class AdminCategoriesController extends Controller
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Stage not found",
+     *         description="Category not found",
      *
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Stage not found")
+     *             @OA\Property(property="message", type="string", example="Category not found")
      *         )
      *     ),
      *
@@ -223,7 +223,7 @@ class AdminCategoriesController extends Controller
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Failed to update status"),
+     *             @OA\Property(property="message", type="string", example="Failed to update category"),
      *             @OA\Property(property="error", type="string", example="SQLSTATE error details")
      *         )
      *     )
@@ -231,13 +231,13 @@ class AdminCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Find status
-        $status = Stage::find($id);
+        // Find category
+        $category = Category::find($id);
 
-        if (! $status) {
+        if (! $category) {
             return response()->json([
                 'success' => false,
-                'message' => 'Stage not found',
+                'message' => 'Category not found',
             ], 404);
         }
 
@@ -257,21 +257,21 @@ class AdminCategoriesController extends Controller
 
         try {
             // Update data
-            $status->name = $request->name;
-            $status->slug = Str::slug($request->name);
-            $status->status_id = $request->status_id;
-            $status->save();
+            $category->name = $request->name;
+            $category->slug = Str::slug($request->name);
+            $category->status_id = $request->status_id;
+            $category->save();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Stage updated successfully',
-                'data' => new CategoriesResource($status),
+                'message' => 'Category updated successfully',
+                'data' => new CategoriesResource($category),
             ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update status',
+                'message' => 'Failed to update category',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -280,37 +280,37 @@ class AdminCategoriesController extends Controller
     /**
      * @OA\Delete(
      *     path="/v1/categories/{id}",
-     *     summary="Delete a status",
+     *     summary="Delete a category",
      *     tags={"Categories"},
      *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="Stage ID",
+     *         description="Category ID",
      *
      *         @OA\Schema(type="integer")
      *     ),
      *
      *     @OA\Response(
      *         response=200,
-     *         description="Stage deleted successfully",
+     *         description="Category deleted successfully",
      *
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=true),
-     *             @OA\Property(property="message", type="string", example="Stage deleted successfully")
+     *             @OA\Property(property="message", type="string", example="Category deleted successfully")
      *         )
      *     ),
      *
      *     @OA\Response(
      *         response=404,
-     *         description="Stage not found",
+     *         description="Category not found",
      *
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Stage not found")
+     *             @OA\Property(property="message", type="string", example="Category not found")
      *         )
      *     ),
      *
@@ -321,7 +321,7 @@ class AdminCategoriesController extends Controller
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Failed to delete status"),
+     *             @OA\Property(property="message", type="string", example="Failed to delete category"),
      *             @OA\Property(property="error", type="string", example="Server error message")
      *         )
      *     )
@@ -329,30 +329,30 @@ class AdminCategoriesController extends Controller
      */
     public function destroy(string $id)
     {
-        // Find Stage
-        $status = Stage::find($id);
+        // Find Category
+        $category = Category::find($id);
 
         // If not found → 404
-        if (! $status) {
+        if (! $category) {
             return response()->json([
                 'success' => false,
-                'message' => 'Stage not found',
+                'message' => 'Category not found',
             ], 404);
         }
 
         try {
             // Delete record
-            $status->delete();
+            $category->delete();
 
             return response()->json([
                 'success' => true,
-                'message' => 'Stage deleted successfully',
+                'message' => 'Category deleted successfully',
             ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete status',
+                'message' => 'Failed to delete category',
                 'error' => $e->getMessage(),
             ], 500);
         }

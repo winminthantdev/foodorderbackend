@@ -96,34 +96,3 @@ Route::prefix('v1')->group(function () {
 
 
 
-// php artisan make:resource Admin/StatusesResource
-// php artisan make:resource Admin/StagesResource
-// php artisan make:resource Admin/VariantsResource
-// php artisan make:resource Admin/UserInfosResource
-// php artisan make:resource Admin/UsersResource
-// php artisan make:resource Admin/PromotionsResource
-// php artisan make:resource Admin/PaymentTypesResource
-// php artisan make:resource Admin/PaymentsResource
-// php artisan make:resource Admin/OrderTypesResource
-// php artisan make:resource Admin/OrdersResource
-// php artisan make:resource Admin/OrderItemsResource
-// php artisan make:resource Admin/MenusResource
-// php artisan make:resource Admin/MenuPromotionsResource
-// php artisan make:resource Admin/MenuAddonsResource
-// php artisan make:resource Admin/DriversResource
-// php artisan make:resource Admin/SubCategoriesResource
-// php artisan make:resource Admin/CategoriesResource
-// php artisan make:resource Admin/AddonsResource
-
-// php artisan make:resource User/PromotionsResource
-// php artisan make:resource User/PaymentTypesResource
-// php artisan make:resource User/PaymentsResource
-// php artisan make:resource User/OrderTypesResource
-// php artisan make:resource User/OrdersResource
-// php artisan make:resource User/AddressesResource
-// php artisan make:resource User/InfosResource
-
-// php artisan make:resource Public/DriversResource
-// php artisan make:resource Public/MenusResource
-// php artisan make:resource Public/CategoriesResource
-// php artisan make:resource Public/SubCategoriesResource
