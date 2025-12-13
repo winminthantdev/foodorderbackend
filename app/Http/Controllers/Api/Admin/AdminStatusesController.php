@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\StatusesResource;
@@ -15,7 +15,7 @@ class AdminStatusesController extends Controller
      * @OA\Get(
      *     path="/v1/statuses",
      *     summary="Get all statuses",
-     *     tags={"Statuses"},
+     *     tags={"Statuses (for admin)"},
      *
      *     @OA\Parameter(
      *         name="search",
