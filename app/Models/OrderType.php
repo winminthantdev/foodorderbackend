@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Ordertype extends Model
+class OrderType extends Model
 {
     use HasFactory;
 
@@ -21,5 +21,10 @@ class Ordertype extends Model
     public function orders()
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

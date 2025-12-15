@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Http\Resources\Admin\CategoriesResource;
+use App\Http\Resources\Admin\OrderTypesResource;
 use App\Models\OrderType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -69,7 +69,7 @@ class AdminOrderTypesController extends Controller
         $ordertypes = $query->paginate($perPage);
 
         return response()->json([
-            'data' => CategoriesResource::collection($ordertypes),
+            'data' => OrderTypesResource::collection($ordertypes),
             'meta' => [
                 'current_page' => $ordertypes->currentPage(),
                 'total_page' => $ordertypes->lastPage(),
@@ -111,7 +111,7 @@ class AdminOrderTypesController extends Controller
         // Validate input
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:ordertypes,name',
-            'icon_path' => 'nullable|string|max:255',
+            'description' => 'nullable|string|max:1000',
             'status_id' => 'required|in:3,4',
         ]);
 
@@ -128,15 +128,14 @@ class AdminOrderTypesController extends Controller
             // Create OrderType
             $paymenttype = OrderType::create([
                 'name' => $request->name,
-                'slug' => Str::slug($request->name),
-                'icon' => $request->icon_path,
+                'description' => $request->description,
                 'status_id' => $request->status_id,
             ]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'OrderType created successfully',
-                'data' => new CategoriesResource($paymenttype),
+                'data' => new OrderTypesResource($paymenttype),
             ], 201);
 
         } catch (\Exception $e) {
@@ -270,7 +269,7 @@ class AdminOrderTypesController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'OrderType updated successfully',
-                'data' => new CategoriesResource($paymenttype),
+                'data' => new OrderTypesResource($paymenttype),
             ], 200);
 
         } catch (\Exception $e) {

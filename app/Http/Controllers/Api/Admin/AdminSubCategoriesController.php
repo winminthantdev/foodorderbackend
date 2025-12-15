@@ -77,7 +77,7 @@ class AdminSubCategoriesController extends Controller
      *         @OA\JsonContent(
      *             required={"name", "category_id", "status_id"},
      *             @OA\Property(property="name", type="string", example="Nodels"),
-     *             @OA\Property(property="category_id", type= "integer", example= 1)
+     *             @OA\Property(property="category_id", type= "integer", example= 1),
      *             @OA\Property(property="status_id", type= "integer", example= 3)
      *         )
      *     ),

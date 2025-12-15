@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Paymenttype extends Model
+class PaymentType extends Model
 {
      use HasFactory;
 
