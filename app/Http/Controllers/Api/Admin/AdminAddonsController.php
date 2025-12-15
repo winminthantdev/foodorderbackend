@@ -7,7 +7,6 @@ use App\Http\Resources\Admin\AddonsResource;
 use App\Models\Addon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Str;
 
 class AdminAddonsController extends Controller
 {
@@ -90,6 +89,7 @@ class AdminAddonsController extends Controller
      *
      *         @OA\JsonContent(
      *             required={"name","price","status_id"},
+     *
      *             @OA\Property(property="name", type="string", example="Soup"),
      *             @OA\Property(property="price", type="string", example="500"),
      *             @OA\Property(property="status_id", type= "integer", example= 3)
@@ -186,7 +186,12 @@ class AdminAddonsController extends Controller
      *                 type="object",
      *                 @OA\Property(property="id", type="integer", example=1),
      *                 @OA\Property(property="name", type="string", example="Active"),
-     *                 @OA\Property(property="slug", type="string", example="active")
+     *                 @OA\Property(property="price", type="integer", example="500"),
+     *                 @OA\Property(
+     *                    property="status",
+     *                    type="object",
+     *                    @OA\Property(property="id", type="integer", example=3),
+     *                    @OA\Property(property="name", type="string", example="On"))
      *             )
      *         )
      *     ),
