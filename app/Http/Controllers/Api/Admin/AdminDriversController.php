@@ -81,7 +81,7 @@ class AdminDriversController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/v1/drivers",
+     *     path="/v1/admin/drivers",
      *     summary="Create new drivers",
      *     tags={"Drivers"},
      *
@@ -89,18 +89,15 @@ class AdminDriversController extends Controller
      *         required=true,
      *
      *         @OA\JsonContent(
-     *             required={"name","phone_number","status_id", "latitude", "longitude", "rating"},
+     *             required={"name", "phone_number", "status_id", "rating"},
+     *
      *            @OA\Property(property="name", type="string", example="Driver Name"),
      *            @OA\Property(property="phone_number", type="string", example="+1234567890"),
      *            @OA\Property(property="status_id", type="integer", example=3),
      *            @OA\Property(property="latitude", type="number", format="float", example=37.7749),
      *            @OA\Property(property="longitude", type="number", format="float", example=-122.4194),
-     *            @OA\Property(
-     *                 property="rating",
-     *                 type="number",
-     *                 format="float",
-     *                 example=4.5
-     *         )
+     *            @OA\Property(property="rating", type="number", format="float", example=4.5)
+     *        )
      *     ),
      *
      *     @OA\Response(
@@ -113,6 +110,8 @@ class AdminDriversController extends Controller
      *     )
      * )
      */
+
+
     public function store(Request $request)
     {
         // Validate input

@@ -90,15 +90,14 @@ class AdminMenusController extends Controller
      *                 mediaType="multipart/form-data",
      *
      *                 @OA\Schema(
-     *                     required={"name","status_id"},
-     *
-     *                     @OA\Property(property="name", type="string", example="KBZ Pay"),
-     *                     @OA\Property(property="status_id", type="integer", example=3),
-     *                     @OA\Property(
-     *                         property="image",
-     *                         type="string",
-     *                         format="binary"
-     *                     )
+     *                     required={"name", "description", "price", "rating", "subcategory_id", "category_id", "status_id"},
+     *                     @OA\Property(property="name", type="string", example="Shan Noodles"),
+     *                    @OA\Property(property="description", type="string", example="Delicious Shan Noodles"),
+     *                    @OA\Property(property="price", type="number", format="float", example=5.99),
+     *                    @OA\Property(property="rating", type="number", format="float", example=4.5),
+     *                    @OA\Property(property="subcategory_id", type="integer", example=2),
+     *                    @OA\Property(property="category_id", type="integer", example=1),
+     *                     @OA\Property(property="status_id", type="integer", example=3)
      *                 )
      *             )
      *         }
@@ -109,6 +108,8 @@ class AdminMenusController extends Controller
      *     @OA\Response(response=500, description="Server error")
      * )
      */
+
+    
     public function store(Request $request)
     {
         // Validate input
