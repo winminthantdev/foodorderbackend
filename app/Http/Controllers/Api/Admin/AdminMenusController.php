@@ -16,7 +16,7 @@ class AdminMenusController extends Controller
      * @OA\Get(
      *     path="/v1/admin/menus",
      *     summary="Get all menus",
-     *     tags={"Admin Menus"},
+     *     tags={"Menus (Admin)"},
      *     security={{"sanctum":{}}},
      *
      *     @OA\Parameter(
@@ -55,7 +55,7 @@ class AdminMenusController extends Controller
             $query->where('name', 'like', '%'.$request->search.'%');
         }
 
-        // Filter example: by paymenttype type
+        // Filter example: by menu type
         if ($request->has('status_id') && $request->status_id != '') {
             $query->where('status_id', $request->status_id);
         }
@@ -79,7 +79,7 @@ class AdminMenusController extends Controller
      * @OA\Post(
      *     path="/v1/admin/menus",
      *     summary="Create payment type",
-     *     tags={"Admin Menus"},
+     *     tags={"Menus (Admin)"},
      *     security={{"sanctum":{}}},
      *
      *     @OA\RequestBody(
@@ -90,8 +90,9 @@ class AdminMenusController extends Controller
      *                 mediaType="multipart/form-data",
      *
      *                 @OA\Schema(
-     *                     required={"name", "description", "price", "rating", "subcategory_id", "category_id", "status_id"},
+     *                     required={"name", "price", "rating", "subcategory_id", "category_id", "status_id"},
      *                     @OA\Property(property="name", type="string", example="Shan Noodles"),
+     *                     @OA\Property(property="image", type="string", format="binary"),
      *                    @OA\Property(property="description", type="string", example="Delicious Shan Noodles"),
      *                    @OA\Property(property="price", type="number", format="float", example=5.99),
      *                    @OA\Property(property="rating", type="number", format="float", example=4.5),
@@ -109,7 +110,7 @@ class AdminMenusController extends Controller
      * )
      */
 
-    
+
     public function store(Request $request)
     {
         // Validate input
@@ -135,35 +136,40 @@ class AdminMenusController extends Controller
 
         try {
 
-            $iconPath = null;
+            $imagePath = null;
             // Single Image Upload
             if ($request->hasFile('image')) {
 
                 $file = $request->file('image');
                 $newfilename = uniqid().'_'.time().'.'.$file->getClientOriginalExtension();
                 $file->move(public_path('assets/images/menus/'), $newfilename);
-                $iconPath = 'assets/images/menus/'.$newfilename;
+                $imagePath = 'assets/images/menus/'.$newfilename;
             }
 
             // Create Menu
-            $paymenttype = Menu::create([
+            $menu = Menu::create([
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
-                'image' => $iconPath,
+                'image' => $imagePath,
+                'description'=> $request->description,
+                'price'=> $request->price,
+                'rating'=> $request->rating,
+                'subcategory_id'=> $request->subcategory_id,
+                'category_id'=> $request->category_id,
                 'status_id' => $request->status_id,
             ]);
 
             return response()->json([
                 'success' => true,
                 'message' => 'Menu created successfully',
-                'data' => new MenusResource($paymenttype),
+                'data' => new MenusResource($menu),
             ], 201);
 
         } catch (\Exception $e) {
             // Handle other server errors
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create paymenttype',
+                'message' => 'Failed to create menu',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -173,7 +179,7 @@ class AdminMenusController extends Controller
      * @OA\Put(
      *     path="/v1/admin/menus/{id}",
      *     summary="Update payment type",
-     *     tags={"Admin Menus"},
+     *     tags={"Menus (Admin)"},
      *     security={{"sanctum":{}}},
      *
      *     @OA\Parameter(
@@ -188,19 +194,19 @@ class AdminMenusController extends Controller
      *         required=true,
      *         content={
      *
-     *             @OA\MediaType(
+     *            @OA\MediaType(
      *                 mediaType="multipart/form-data",
      *
      *                 @OA\Schema(
-     *                     required={"name","status_id"},
-     *
-     *                     @OA\Property(property="name", type="string", example="KBZ Pay"),
-     *                     @OA\Property(property="status_id", type="integer", example=3),
-     *                     @OA\Property(
-     *                         property="image",
-     *                         type="string",
-     *                         format="binary"
-     *                     )
+     *                     required={"name", "price", "rating", "subcategory_id", "category_id", "status_id"},
+     *                     @OA\Property(property="name", type="string", example="Shan Noodles"),
+     *                     @OA\Property(property="image", type="string", format="binary"),
+     *                    @OA\Property(property="description", type="string", example="Delicious Shan Noodles"),
+     *                    @OA\Property(property="price", type="number", format="float", example=5.99),
+     *                    @OA\Property(property="rating", type="number", format="float", example=4.5),
+     *                    @OA\Property(property="subcategory_id", type="integer", example=2),
+     *                    @OA\Property(property="category_id", type="integer", example=1),
+     *                     @OA\Property(property="status_id", type="integer", example=3)
      *                 )
      *             )
      *         }
@@ -213,10 +219,10 @@ class AdminMenusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Find paymenttype
-        $paymenttype = Menu::find($id);
+        // Find menu
+        $menu = Menu::find($id);
 
-        if (! $paymenttype) {
+        if (! $menu) {
             return response()->json([
                 'success' => false,
                 'message' => 'Menu not found',
@@ -247,7 +253,7 @@ class AdminMenusController extends Controller
         try {
 
             if($request->hasFile('image') ) {
-                $oldIcon = $paymenttype->image;
+                $oldIcon = $menu->image;
 
                 if(File::exists(public_path($oldIcon))) {
                     File::delete(public_path($oldIcon));
@@ -256,31 +262,31 @@ class AdminMenusController extends Controller
                 $file = $request->file('image');
                 $newfilename = uniqid().'_'.time().'.'.$file->getClientOriginalExtension();
                 $file->move(public_path('assets/images/menus/'), $newfilename);
-                $paymenttype->image = 'assets/images/menus/'.$newfilename;
+                $menu->image = 'assets/images/menus/'.$newfilename;
             }
 
 
             // Update data
-            $paymenttype->name = $request->name;
-            $paymenttype->slug = Str::slug($request->name);
-            $paymenttype->description = $request->description;
-            $paymenttype->price = $request->price;
-            $paymenttype->rating = $request->rating;
-            $paymenttype->subcategory_id = $request->subcategory_id;
-            $paymenttype->category_id = $request->category_id;
-            $paymenttype->status_id = $request->status_id;
-            $paymenttype->save();
+            $menu->name = $request->name;
+            $menu->slug = Str::slug($request->name);
+            $menu->description = $request->description;
+            $menu->price = $request->price;
+            $menu->rating = $request->rating;
+            $menu->subcategory_id = $request->subcategory_id;
+            $menu->category_id = $request->category_id;
+            $menu->status_id = $request->status_id;
+            $menu->save();
 
             return response()->json([
                 'success' => true,
                 'message' => 'Menu updated successfully',
-                'data' => new MenusResource($paymenttype),
+                'data' => new MenusResource($menu),
             ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update paymenttype',
+                'message' => 'Failed to update menu',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -290,7 +296,7 @@ class AdminMenusController extends Controller
      * @OA\Delete(
      *     path="/v1/admin/menus/{id}",
      *     summary="Delete payment type",
-     *     tags={"Admin Menus"},
+     *     tags={"Menus (Admin)"},
      *     security={{"sanctum":{}}},
      *
      *     @OA\Parameter(
@@ -308,10 +314,10 @@ class AdminMenusController extends Controller
     public function destroy(string $id)
     {
         // Find Menu
-        $paymenttype = Menu::find($id);
+        $menu = Menu::find($id);
 
         // If not found → 404
-        if (! $paymenttype) {
+        if (! $menu) {
             return response()->json([
                 'success' => false,
                 'message' => 'Menu not found',
@@ -320,7 +326,7 @@ class AdminMenusController extends Controller
 
         try {
             // Delete record
-            $paymenttype->delete();
+            $menu->delete();
 
             return response()->json([
                 'success' => true,
@@ -330,7 +336,7 @@ class AdminMenusController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete paymenttype',
+                'message' => 'Failed to delete menu',
                 'error' => $e->getMessage(),
             ], 500);
         }

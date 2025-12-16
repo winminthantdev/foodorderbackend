@@ -13,9 +13,9 @@ class AdminDriversController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/v1/drivers",
+     *     path="/v1/admin/drivers",
      *     summary="Get all drivers",
-     *     tags={"Drivers"},
+     *     tags={"Drivers (Admin)"},
      *
      *     @OA\Parameter(
      *         name="search",
@@ -83,7 +83,7 @@ class AdminDriversController extends Controller
      * @OA\Post(
      *     path="/v1/admin/drivers",
      *     summary="Create new drivers",
-     *     tags={"Drivers"},
+     *     tags={"Drivers (Admin)"},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -164,7 +164,7 @@ class AdminDriversController extends Controller
      * @OA\Put(
      *     path="/v1/drivers/{id}",
      *     summary="Update a drivers",
-     *     tags={"Drivers"},
+     *     tags={"Drivers (Admin)"},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -302,7 +302,7 @@ class AdminDriversController extends Controller
      * @OA\Delete(
      *     path="/v1/drivers/{id}",
      *     summary="Delete a drivers",
-     *     tags={"Drivers"},
+     *     tags={"Drivers (Admin)"},
      *
      *     @OA\Parameter(
      *         name="id",

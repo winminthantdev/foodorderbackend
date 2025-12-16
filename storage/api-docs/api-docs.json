@@ -674,13 +674,13 @@
                 }
             }
         },
-        "/v1/drivers": {
+        "/v1/admin/drivers": {
             "get": {
                 "tags": [
-                    "Drivers"
+                    "Drivers (Admin)"
                 ],
                 "summary": "Get all drivers",
-                "operationId": "dbc4295a2c5eeab06bdc522003869f9b",
+                "operationId": "effdfe5285bcb3a57c567b88abffd9cd",
                 "parameters": [
                     {
                         "name": "search",
@@ -715,12 +715,10 @@
                         "description": "List of drivers"
                     }
                 }
-            }
-        },
-        "/v1/admin/drivers": {
+            },
             "post": {
                 "tags": [
-                    "Drivers"
+                    "Drivers (Admin)"
                 ],
                 "summary": "Create new drivers",
                 "operationId": "30b2e26039b1995c46783922ec873671",
@@ -782,7 +780,7 @@
         "/v1/drivers/{id}": {
             "put": {
                 "tags": [
-                    "Drivers"
+                    "Drivers (Admin)"
                 ],
                 "summary": "Update a drivers",
                 "operationId": "fa80ca6bd26391cf0eaf4d108d708a2c",
@@ -934,7 +932,7 @@
             },
             "delete": {
                 "tags": [
-                    "Drivers"
+                    "Drivers (Admin)"
                 ],
                 "summary": "Delete a drivers",
                 "operationId": "98fbef441e723514af9005164554298f",
@@ -1020,7 +1018,7 @@
         "/v1/admin/menus": {
             "get": {
                 "tags": [
-                    "Admin Menus"
+                    "Menus (Admin)"
                 ],
                 "summary": "Get all menus",
                 "operationId": "cb6b72bb63486b4889c02ecf68445985",
@@ -1062,7 +1060,7 @@
             },
             "post": {
                 "tags": [
-                    "Admin Menus"
+                    "Menus (Admin)"
                 ],
                 "summary": "Create payment type",
                 "operationId": "2de2c451ae1e7af207c7c13706abd3db",
@@ -1073,7 +1071,6 @@
                             "schema": {
                                 "required": [
                                     "name",
-                                    "description",
                                     "price",
                                     "rating",
                                     "subcategory_id",
@@ -1084,6 +1081,10 @@
                                     "name": {
                                         "type": "string",
                                         "example": "Shan Noodles"
+                                    },
+                                    "image": {
+                                        "type": "string",
+                                        "format": "binary"
                                     },
                                     "description": {
                                         "type": "string",
@@ -1138,7 +1139,7 @@
         "/v1/admin/menus/{id}": {
             "put": {
                 "tags": [
-                    "Admin Menus"
+                    "Menus (Admin)"
                 ],
                 "summary": "Update payment type",
                 "operationId": "6b469a6e9a9c850c4f78024023944a5b",
@@ -1159,20 +1160,46 @@
                             "schema": {
                                 "required": [
                                     "name",
+                                    "price",
+                                    "rating",
+                                    "subcategory_id",
+                                    "category_id",
                                     "status_id"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "KBZ Pay"
-                                    },
-                                    "status_id": {
-                                        "type": "integer",
-                                        "example": 3
+                                        "example": "Shan Noodles"
                                     },
                                     "image": {
                                         "type": "string",
                                         "format": "binary"
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Delicious Shan Noodles"
+                                    },
+                                    "price": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 5.99
+                                    },
+                                    "rating": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 4.5
+                                    },
+                                    "subcategory_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "category_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "status_id": {
+                                        "type": "integer",
+                                        "example": 3
                                     }
                                 },
                                 "type": "object"
@@ -1199,7 +1226,7 @@
             },
             "delete": {
                 "tags": [
-                    "Admin Menus"
+                    "Menus (Admin)"
                 ],
                 "summary": "Delete payment type",
                 "operationId": "f2adc1b202666ba7d2ca4a0f4683f9be",
@@ -3165,12 +3192,12 @@
             "description": "Categories"
         },
         {
-            "name": "Drivers",
-            "description": "Drivers"
+            "name": "Drivers (Admin)",
+            "description": "Drivers (Admin)"
         },
         {
-            "name": "Admin Menus",
-            "description": "Admin Menus"
+            "name": "Menus (Admin)",
+            "description": "Menus (Admin)"
         },
         {
             "name": "OrderTypes",
