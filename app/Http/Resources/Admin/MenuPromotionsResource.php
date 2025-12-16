@@ -14,6 +14,19 @@ class MenuPromotionsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id"=> $this->id,
+            "menu"=> [
+                "id"=> $this->menu->id,
+                "name"=> $this->menu->name,
+                "slug"=> $this->menu->slug,
+            ],
+            "promotion"=> [
+                "id"=> $this->promotion->id,
+                "code"=> $this->promotion->code,
+                "description"=> $this->promotion->description,
+            ],
+            "custom_discount_value"=> $this->custom_discount_value,
+        ];
     }
 }

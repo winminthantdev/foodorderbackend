@@ -14,6 +14,19 @@ class MenuAddonsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id"=> $this->id,
+            "menu"=> [
+                "id"=> $this->menu->id,
+                "name"=> $this->menu->name,
+                "slug"=> $this->menu->slug,
+            ],
+            "addon"=> [
+                "id"=> $this->addon->id,
+                "name"=> $this->addon->name,
+            ],
+            "max_quantity"=> $this->max_quantity,
+            "custom_price"=> $this->custom_price,
+        ];
     }
 }

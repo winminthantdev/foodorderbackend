@@ -14,6 +14,29 @@ class MenusResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id"=> $this->id,
+            "name"=> $this->name,
+            "slug"=> $this->slug,
+            "image"=> $this->image,
+            "description"=> $this->description,
+            "price"=> $this->price,
+            "rating"=> $this->rating,
+            "subcategory" => [
+                "id" => $this->subcategory->id,
+                "name"=> $this->subcategory->name,
+                "slug"=> $this->subcategory->slug,
+            ],
+            "category" => [
+                "id" => $this->category->id,
+                "name"=> $this->category->name,
+                "slug"=> $this->category->slug,
+            ],
+            "status"=> [
+                "id"=> $this->status->id,
+                "name"=> $this->status->name
+            ],
+        ];
+        
     }
 }

@@ -33,17 +33,11 @@ class Menu extends Model
     }
 
     public function addons()
-{
-    return $this->belongsToMany(Addon::class, 'menu_addons')
-                ->withPivot(['max_quantity', 'custom_price'])
-                ->withTimestamps();
-}
-
-public function variants()
-{
-    return $this->hasMany(Variant::class);
-}
-
+    {
+        return $this->belongsToMany(Addon::class, 'menu_addons')
+            ->withPivot(['max_quantity', 'custom_price'])
+            ->withTimestamps();
+    }
 
     public function category()
     {
@@ -52,16 +46,22 @@ public function variants()
 
     public function subcategory()
     {
-        return $this->belongsTo(Subcategory::class);
+        return $this->belongsTo(SubCategory::class);
+    }
+
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
+    }
+
+    public function variants()
+    {
+        return $this->hasMany(Variant::class);
     }
 
     public function ratings()
     {
         return $this->morphMany(Rateable::class, 'rateable');
-    }
-
-    public function status()
-    {
-        return $this->belongsTo(Status::class);
     }
 }
