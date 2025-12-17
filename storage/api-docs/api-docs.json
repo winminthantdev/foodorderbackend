@@ -1961,6 +1961,108 @@
                 ]
             }
         },
+        "/v1/admin/order-items": {
+            "get": {
+                "tags": [
+                    "Order Items (Admin)"
+                ],
+                "summary": "Get all order items",
+                "operationId": "22b0a833b192f2826b235bcb963571a7",
+                "parameters": [
+                    {
+                        "name": "order_id",
+                        "in": "query",
+                        "description": "Filter by order ID",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of order items"
+                    }
+                }
+            }
+        },
+        "/v1/admin/order-items/{id}": {
+            "get": {
+                "tags": [
+                    "Order Items (Admin)"
+                ],
+                "summary": "Get order item detail",
+                "operationId": "224737151028b414397f10f478a221c7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order item detail"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Order Items (Admin)"
+                ],
+                "summary": "Delete order item",
+                "operationId": "c4c4e43efdc3d465728e74548bb67ead",
+                "responses": {
+                    "200": {
+                        "description": "Deleted"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Order Items (Admin)"
+                ],
+                "summary": "Update order item status",
+                "operationId": "6f8546bb2038b1c262faac03df3100c2",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "status_id"
+                                ],
+                                "properties": {
+                                    "status_id": {
+                                        "type": "integer",
+                                        "example": 4
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Updated"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
         "/v1/ordertypes": {
             "get": {
                 "tags": [
@@ -2284,6 +2386,192 @@
                         }
                     }
                 }
+            }
+        },
+        "/v1/admin/orders": {
+            "get": {
+                "tags": [
+                    "Orders (Admin)"
+                ],
+                "summary": "Get all orders",
+                "operationId": "c2284ff5af1b95581dc4bcf924f4c0e3",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "description": "Filter by orders id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of orders"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Orders (Admin)"
+                ],
+                "summary": "Create new orders",
+                "operationId": "6097de4b0ce7747492d384048192a4b7",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "menu_id",
+                                    "promotion_id",
+                                    "custom_discount_value"
+                                ],
+                                "properties": {
+                                    "menu_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "promotion_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "custom_discount_value": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 10.5
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/admin/orders/{id}": {
+            "get": {
+                "tags": [
+                    "Orders (Admin)"
+                ],
+                "summary": "Get order by ID",
+                "operationId": "7fd828033c0c6a990484d7070919b15d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order retrieved successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Orders (Admin)"
+                ],
+                "summary": "Update order",
+                "operationId": "05a5a6fb497cb5d6f0c9b62e6bfd3de3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "status": {
+                                        "type": "string",
+                                        "example": "completed"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Order updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Orders (Admin)"
+                ],
+                "summary": "Delete order",
+                "operationId": "83e38ac8ee8b1b7dac00468c0b7bbda5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Order deleted successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/v1/admin/payment-types": {
@@ -4585,8 +4873,16 @@
             "description": "Menus (Admin)"
         },
         {
+            "name": "Order Items (Admin)",
+            "description": "Order Items (Admin)"
+        },
+        {
             "name": "OrderTypes",
             "description": "OrderTypes"
+        },
+        {
+            "name": "Orders (Admin)",
+            "description": "Orders (Admin)"
         },
         {
             "name": "Admin PaymentTypes",
