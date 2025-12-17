@@ -84,9 +84,20 @@ Route::prefix('v1')->group(function () {
         Route::resource('stages', AdminStagesController::class);
         Route::resource('statuses', AdminStatusesController::class);
         Route::resource('users', AdminUsersController::class);
+        Route::prefix('users')->group(function () {
+            Route::get('/', [AdminUsersController::class, 'index']);
+            Route::get('{id}', [AdminUsersController::class, 'show']);
+
+            Route::patch('{id}/block', [AdminUsersController::class, 'block']);
+            Route::patch('{id}/unblock', [AdminUsersController::class, 'unblock']);
+            Route::patch('{id}/ban', [AdminUsersController::class, 'ban']);
+            Route::patch('{id}/unban', [AdminUsersController::class, 'unban']);
+        });
         Route::resource('user-infos', AdminUserInfosController::class);
         Route::resource('variants', AdminVariantsController::class);
     });
+
+
     Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {});
 
 });

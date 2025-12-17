@@ -3886,6 +3886,114 @@
                     }
                 }
             }
+        },
+        "/v1/admin/users": {
+            "get": {
+                "tags": [
+                    "Users (Admin)"
+                ],
+                "summary": "Get all users",
+                "operationId": "40d1e794d6f2701810ceee721f248e1a",
+                "responses": {
+                    "200": {
+                        "description": "List users"
+                    }
+                }
+            }
+        },
+        "/v1/admin/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users (Admin)"
+                ],
+                "summary": "Get user details",
+                "operationId": "9af58bc96c6bf51720f8c18674a7fb37",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User detail"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Users (Admin)"
+                ],
+                "summary": "Delete a user",
+                "operationId": "12a1aa2b27a27de1c63a401b684f2210",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User deleted"
+                    }
+                }
+            }
+        },
+        "/v1/admin/users/{id}/block": {
+            "patch": {
+                "tags": [
+                    "Users (Admin)"
+                ],
+                "summary": "Block a user",
+                "operationId": "3e1e144882f3c5304deab8e1a3872138",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User blocked"
+                    }
+                }
+            }
+        },
+        "/v1/admin/users/{id}/unblock": {
+            "patch": {
+                "tags": [
+                    "Users (Admin)"
+                ],
+                "summary": "Unblock a user",
+                "operationId": "7bacf47c49ba2a50350f3016d587ecec",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User unblocked"
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -3944,6 +4052,10 @@
         {
             "name": "SubCategories",
             "description": "SubCategories"
+        },
+        {
+            "name": "Users (Admin)",
+            "description": "Users (Admin)"
         }
     ]
 }

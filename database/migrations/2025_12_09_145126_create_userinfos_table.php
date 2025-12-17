@@ -20,6 +20,7 @@ return new class extends Migration
             $table->integer('loyalty_points')->default(0);
             $table->boolean('notification_enabled')->default(true);
             $table->dateTime('last_active')->nullable();
+            $table->boolean('is_blocked')->default(false);
             $table->timestamps();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 

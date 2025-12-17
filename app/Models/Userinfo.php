@@ -18,7 +18,8 @@ class Userinfo extends Model
         'loyalty_points',
         'notification_enabled',
         'last_active',
-        'user_id'
+        'user_id',
+        'is_blocked',
     ];
 
     public function user(){
