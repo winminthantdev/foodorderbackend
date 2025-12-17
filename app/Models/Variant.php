@@ -19,10 +19,16 @@ class Variant extends Model
         'menu_id',
         'name',
         'extra_price',
+        'status_id'
     ];
 
     public function menu()
     {
         return $this->belongsTo(Menu::class);
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class);
     }
 }

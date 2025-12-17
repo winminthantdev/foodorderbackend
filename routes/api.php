@@ -29,7 +29,6 @@ use App\Http\Controllers\Api\Admin\AdminPaymentsController;
 use App\Http\Controllers\Api\Admin\AdminPaymentTypesController;
 use App\Http\Controllers\Api\Admin\AdminPromotionsController;
 use App\Http\Controllers\Api\Admin\AdminSubCategoriesController;
-use App\Http\Controllers\Api\Admin\AdminUserInfosController;
 use App\Http\Controllers\Api\Admin\AdminUsersController;
 use App\Http\Controllers\Api\Admin\AdminVariantsController;
 use App\Http\Controllers\Api\Admin\AdminStagesController;
@@ -75,7 +74,12 @@ Route::prefix('v1')->group(function () {
         Route::resource('drivers', AdminDriversController::class);
         Route::resource('order-types', AdminOrderTypesController::class);
         Route::resource('orders', AdminOrdersController::class);
-        Route::resource('order-items', AdminOrderItemsController::class);
+        Route::prefix('order-items')->group(function () {
+            Route::get('order-items', [AdminOrderItemsController::class, 'index']);
+            Route::get('order-items/{id}', [AdminOrderItemsController::class, 'show']);
+            Route::patch('order-items/{id}', [AdminOrderItemsController::class, 'update']);
+            Route::delete('order-items/{id}', [AdminOrderItemsController::class, 'destroy']);
+        });
         Route::resource('payments', AdminPaymentsController::class);
         Route::resource('payment-types', AdminPaymentTypesController::class);
         Route::resource('promotions', AdminPromotionsController::class);
@@ -87,13 +91,9 @@ Route::prefix('v1')->group(function () {
         Route::prefix('users')->group(function () {
             Route::get('/', [AdminUsersController::class, 'index']);
             Route::get('{id}', [AdminUsersController::class, 'show']);
-
             Route::patch('{id}/block', [AdminUsersController::class, 'block']);
             Route::patch('{id}/unblock', [AdminUsersController::class, 'unblock']);
-            Route::patch('{id}/ban', [AdminUsersController::class, 'ban']);
-            Route::patch('{id}/unban', [AdminUsersController::class, 'unban']);
         });
-        Route::resource('user-infos', AdminUserInfosController::class);
         Route::resource('variants', AdminVariantsController::class);
     });
 
