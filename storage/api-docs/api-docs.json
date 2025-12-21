@@ -4467,6 +4467,49 @@
                         "description": "List users"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Users (Admin)"
+                ],
+                "summary": "Create a new user",
+                "operationId": "96c5c8dab422a73944ca67e100d943b6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "John Doe"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "john@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "secret123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "User created successfully"
+                    }
+                }
             }
         },
         "/v1/admin/users/{id}": {

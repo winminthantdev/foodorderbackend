@@ -14,6 +14,18 @@ class VariantsResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
-        return parent::toArray($request);
+        return [
+            "id"=> $this->id,
+            "menu"=>[
+                "id"=> $this->menu->id,
+                "name" => $this->menu->name
+            ],
+            "name"=> $this->variant->name,
+            "extra_price"=> $this->extra_price,
+            "status" => [
+                "id"=> $this->status->id,
+                "name"=> $this->status->name
+            ]
+        ];
     }
 }

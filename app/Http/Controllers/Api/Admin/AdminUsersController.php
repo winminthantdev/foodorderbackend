@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Admin\UsersResource;
+use App\Http\Resources\Admin\UserInfosResource;
 use App\Models\User;
 use App\Models\Userinfo;
 use Illuminate\Http\Request;
+use Validator;
 
 class AdminUsersController extends Controller
 {
@@ -48,6 +50,59 @@ class AdminUsersController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *     path="/v1/admin/users",
+     *     summary="Create a new user",
+     *     tags={"Users (Admin)"},
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"name","email","password"},
+     *             @OA\Property(property="name", type="string", example="John Doe"),
+     *             @OA\Property(property="email", type="string", format="email", example="john@example.com"),
+     *             @OA\Property(property="password", type="string", format="password", example="secret123")
+     *         )
+     *     ),
+     *     @OA\Response(response=201, description="User created successfully")
+     * )
+    */
+    public function store(Request $request)
+    {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required|string|max:255',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'errors' => $validator->errors()
+            ], 422);
+        }
+
+        try {
+            $user = User::create([
+                'name' => $request->name,
+                'email' => $request->email,
+                'password' => bcrypt($request->password),
+            ]);
+
+            return response()->json([
+                'success' => true,
+                'data' => new UsersResource($user),
+            ], 201);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'User creation failed',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+
+    }
+
+    /**
      * @OA\Get(
      *     path="/v1/admin/users/{id}",
      *     summary="Get user details",
@@ -63,17 +118,14 @@ class AdminUsersController extends Controller
      */
     public function show(string $id)
     {
-        $user = User::with('userinfo')->find($id);
-
-        if (! $user) {
-            return response()->json([
-                'success' => false,
-                'message' => 'User not found'
-            ], 404);
-        }
+        $user = User::with('userinfo')->findOrFail($id);
+        $user = User::findOrFail($id);
 
         return response()->json([
-            'data' => new UsersResource($user),
+            'data' => [
+                "user"=> new UsersResource($user),
+                "userinfo"=> $user->userinfo ?  new UserInfosResource($user->userinfo) : null,
+            ],
         ], 200);
     }
 
