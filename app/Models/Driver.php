@@ -21,6 +21,10 @@ class Driver extends Model
         "user_id",
     ] ;
 
+    public function status(){
+        return $this->belongsTo(Status::class, 'status_id');
+    }
+
     public function ratings(){
         return $this->morphMany(Rateable::class, 'rateable');
     }

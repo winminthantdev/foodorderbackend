@@ -162,7 +162,7 @@ class AdminDriversController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/v1/drivers/{id}",
+     *     path="/v1/admin/drivers/{id}",
      *     summary="Update a drivers",
      *     tags={"Drivers (Admin)"},
      *
@@ -179,10 +179,15 @@ class AdminDriversController extends Controller
      *         required=true,
      *
      *         @OA\JsonContent(
-     *             required={"name"},
+     *             required={"name", "phone_number", "status_id", "rating"},
      *
-     *             @OA\Property(property="name", type="string", example="Updated Driver Name")
-     *         )
+     *            @OA\Property(property="name", type="string", example="Driver Name"),
+     *            @OA\Property(property="phone_number", type="string", example="+1234567890"),
+     *            @OA\Property(property="status_id", type="integer", example=3),
+     *            @OA\Property(property="latitude", type="number", format="float", example=37.7749),
+     *            @OA\Property(property="longitude", type="number", format="float", example=-122.4194),
+     *            @OA\Property(property="rating", type="number", format="float", example=4.5)
+     *        )
      *     ),
      *
      *     @OA\Response(
@@ -300,7 +305,7 @@ class AdminDriversController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/v1/drivers/{id}",
+     *     path="/v1/admin/drivers/{id}",
      *     summary="Delete a drivers",
      *     tags={"Drivers (Admin)"},
      *

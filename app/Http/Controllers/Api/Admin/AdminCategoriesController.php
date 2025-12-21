@@ -13,7 +13,7 @@ class AdminCategoriesController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/v1/categories",
+     *     path="/v1/admin/categories",
      *     summary="Get all categories",
      *     tags={"Categories"},
      *
@@ -81,7 +81,7 @@ class AdminCategoriesController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/v1/categories",
+     *     path="/v1/admin/categories",
      *     summary="Create new category",
      *     tags={"Categories"},
      *
@@ -148,7 +148,7 @@ class AdminCategoriesController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/v1/categories/{id}",
+     *     path="/v1/admin/categories/{id}",
      *     summary="Update a category",
      *     tags={"Categories"},
      *
@@ -167,7 +167,8 @@ class AdminCategoriesController extends Controller
      *         @OA\JsonContent(
      *             required={"name"},
      *
-     *             @OA\Property(property="name", type="string", example="Updated Category Name")
+     *             @OA\Property(property="name", type="string", example="Updated Category Name"),
+     *             @OA\Property(property="status_id", type="integer", example=3)
      *         )
      *     ),
      *
@@ -279,7 +280,7 @@ class AdminCategoriesController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/v1/categories/{id}",
+     *     path="/v1/admin/categories/{id}",
      *     summary="Delete a category",
      *     tags={"Categories"},
      *

@@ -15,7 +15,7 @@ class Order extends Model
         'ordertype_id',
         'paymenttype_id',
         'driver_id',
-        'status_id',
+        'stage_id',
         'address_id',
         'subtotal',
         'discount',

@@ -354,13 +354,13 @@
                 }
             }
         },
-        "/v1/categories": {
+        "/v1/admin/categories": {
             "get": {
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Get all categories",
-                "operationId": "06bea15b562522ea42ed6ae029cd3253",
+                "operationId": "24dee1823221f64d696bb2595de72cce",
                 "parameters": [
                     {
                         "name": "search",
@@ -401,7 +401,7 @@
                     "Categories"
                 ],
                 "summary": "Create new category",
-                "operationId": "f1813f23f10c963b14159cad9a65c333",
+                "operationId": "5ad6bc6c9290fbb00fff8ef4c31879ee",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -436,13 +436,13 @@
                 }
             }
         },
-        "/v1/categories/{id}": {
+        "/v1/admin/categories/{id}": {
             "put": {
                 "tags": [
                     "Categories"
                 ],
                 "summary": "Update a category",
-                "operationId": "8ed69ad8af11956fcfc297de73ff76c4",
+                "operationId": "077caa39d385b8eaf71815a4098f7152",
                 "parameters": [
                     {
                         "name": "id",
@@ -466,6 +466,10 @@
                                     "name": {
                                         "type": "string",
                                         "example": "Updated Category Name"
+                                    },
+                                    "status_id": {
+                                        "type": "integer",
+                                        "example": 3
                                     }
                                 },
                                 "type": "object"
@@ -594,7 +598,7 @@
                     "Categories"
                 ],
                 "summary": "Delete a category",
-                "operationId": "90421198915cba7cc91dda795cead2ed",
+                "operationId": "7169a6b21c6bcc170506ecd744dcdf69",
                 "parameters": [
                     {
                         "name": "id",
@@ -777,13 +781,13 @@
                 }
             }
         },
-        "/v1/drivers/{id}": {
+        "/v1/admin/drivers/{id}": {
             "put": {
                 "tags": [
                     "Drivers (Admin)"
                 ],
                 "summary": "Update a drivers",
-                "operationId": "fa80ca6bd26391cf0eaf4d108d708a2c",
+                "operationId": "8ac9608c1750576d16a54b37900e4ca7",
                 "parameters": [
                     {
                         "name": "id",
@@ -801,12 +805,38 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "name"
+                                    "name",
+                                    "phone_number",
+                                    "status_id",
+                                    "rating"
                                 ],
                                 "properties": {
                                     "name": {
                                         "type": "string",
-                                        "example": "Updated Driver Name"
+                                        "example": "Driver Name"
+                                    },
+                                    "phone_number": {
+                                        "type": "string",
+                                        "example": "+1234567890"
+                                    },
+                                    "status_id": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 37.7749
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": -122.4194
+                                    },
+                                    "rating": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 4.5
                                     }
                                 },
                                 "type": "object"
@@ -935,7 +965,7 @@
                     "Drivers (Admin)"
                 ],
                 "summary": "Delete a drivers",
-                "operationId": "98fbef441e723514af9005164554298f",
+                "operationId": "cf6ae5ae4e030b8af5761f219d5cb57a",
                 "parameters": [
                     {
                         "name": "id",
@@ -2442,23 +2472,83 @@
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "menu_id",
-                                    "promotion_id",
-                                    "custom_discount_value"
+                                    "user_id",
+                                    "ordertype_id",
+                                    "paymenttype_id",
+                                    "stage_id",
+                                    "subtotal",
+                                    "discount",
+                                    "delivery_fee",
+                                    "service_fee",
+                                    "total",
+                                    "is_paid"
                                 ],
                                 "properties": {
-                                    "menu_id": {
+                                    "user_id": {
                                         "type": "integer",
                                         "example": 1
                                     },
-                                    "promotion_id": {
+                                    "ordertype_id": {
                                         "type": "integer",
-                                        "example": 2
+                                        "example": 1
                                     },
-                                    "custom_discount_value": {
+                                    "paymenttype_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "driver_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "stage_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "address_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "subtotal": {
                                         "type": "number",
                                         "format": "float",
-                                        "example": 10.5
+                                        "example": 50
+                                    },
+                                    "discount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 5
+                                    },
+                                    "delivery_fee": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 3
+                                    },
+                                    "service_fee": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 2
+                                    },
+                                    "total": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 50
+                                    },
+                                    "transaction_id": {
+                                        "type": "string",
+                                        "example": "TX123456789"
+                                    },
+                                    "is_paid": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "order_note": {
+                                        "type": "string",
+                                        "example": "Please deliver between 5-6 PM"
+                                    },
+                                    "scheduled_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-15T17:00:00Z"
                                     }
                                 },
                                 "type": "object"

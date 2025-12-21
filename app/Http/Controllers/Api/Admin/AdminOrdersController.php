@@ -90,10 +90,22 @@ class AdminOrdersController extends Controller
      *         required=true,
      *
      *         @OA\JsonContent(
-     *             required={"menu_id", "promotion_id", "custom_discount_value"},
-     *            @OA\Property(property="menu_id", type="integer", example=1),
-     *            @OA\Property(property="promotion_id", type="integer", example=2),
-     *            @OA\Property(property="custom_discount_value", type="number", format="float", example=10.5)
+     *             required={"user_id", "ordertype_id", "paymenttype_id", "stage_id", "subtotal", "discount", "delivery_fee", "service_fee", "total", "is_paid"},
+     *             @OA\Property(property="user_id", type="integer", example=1),
+     *             @OA\Property(property="ordertype_id", type="integer", example=1),
+     *             @OA\Property(property="paymenttype_id", type="integer", example=1),
+     *             @OA\Property(property="driver_id", type="integer", example=1),
+     *             @OA\Property(property="stage_id", type="integer", example=1),
+     *             @OA\Property(property="address_id", type="integer", example=1),
+     *             @OA\Property(property="subtotal", type="number", format="float", example=50.00),
+     *             @OA\Property(property="discount", type="number", format="float", example=5.00),
+     *             @OA\Property(property="delivery_fee", type="number", format="float", example=3.00),
+     *             @OA\Property(property="service_fee", type="number", format="float", example=2.00),
+     *             @OA\Property(property="total", type="number", format="float", example=50.00),
+     *             @OA\Property(property="transaction_id", type="string", example="TX123456789"),
+     *             @OA\Property(property="is_paid", type="boolean", example=true),
+     *             @OA\Property(property="order_note", type="string", example="Please deliver between 5-6 PM"),
+     *             @OA\Property(property="scheduled_at", type="string", format="date-time", example="2025-12-15T17:00:00Z"),
      *        )
      *     ),
      *
@@ -112,8 +124,20 @@ class AdminOrdersController extends Controller
     {
         $validator = Validator::make($request->all(), [
             'user_id' => 'required|exists:users,id',
-            'total_price' => 'required|numeric|min:0',
-            'status' => 'required|string|in:pending,completed,cancelled',
+            'ordertype_id' => 'required|exists:ordertypes,id',
+            'paymenttype_id' => 'required|exists:paymenttypes,id',
+            'driver_id' => 'nullable|exists:drivers,id',
+            'stage_id' => 'required|exists:stages,id',
+            'address_id' => 'nullable|exists:addresses,id',
+            'subtotal' => 'required|numeric|min:0',
+            'discount' => 'required|numeric|min:0',
+            'delivery_fee' => 'required|numeric|min:0',
+            'service_fee' => 'required|numeric|min:0',
+            'total' => 'required|numeric|min:0',
+            'transaction_id' => 'nullable|string',
+            'is_paid' => 'required|boolean',
+            'order_note' => 'nullable|string',
+            'scheduled_at' => 'nullable|date',
         ]);
 
         if ($validator->fails()) {
