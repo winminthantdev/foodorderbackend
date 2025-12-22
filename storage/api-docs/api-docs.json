@@ -782,6 +782,28 @@
             }
         },
         "/v1/admin/drivers/{id}": {
+            "get": {
+                "tags": [
+                    "Drivers (Admin)"
+                ],
+                "summary": "Get driver details",
+                "operationId": "e53b68287edd2e9121f42575fddcf41b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Driver detail"
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Drivers (Admin)"
@@ -1873,6 +1895,28 @@
             }
         },
         "/v1/admin/menus/{id}": {
+            "get": {
+                "tags": [
+                    "Menus (Admin)"
+                ],
+                "summary": "Get menu details",
+                "operationId": "8142b1c5a1bb5d6c888e42f65c794a7e",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User detail"
+                    }
+                }
+            },
             "put": {
                 "tags": [
                     "Menus (Admin)"
@@ -5065,6 +5109,30 @@
                 }
             }
         },
+        "/v1/drivers/{id}": {
+            "get": {
+                "tags": [
+                    "Drivers (Public)"
+                ],
+                "summary": "Get driver details",
+                "operationId": "2cae4a9b5866195c47d5c5447efb20ff",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Driver detail"
+                    }
+                }
+            }
+        },
         "/v1/menus": {
             "get": {
                 "tags": [
@@ -5102,6 +5170,30 @@
                 "responses": {
                     "200": {
                         "description": "Menus list"
+                    }
+                }
+            }
+        },
+        "/v1/menus/{id}": {
+            "get": {
+                "tags": [
+                    "Menus (Public)"
+                ],
+                "summary": "Get menu details",
+                "operationId": "5058186497d2386f17625f2873d941a1",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User detail"
                     }
                 }
             }

@@ -74,4 +74,29 @@ class MenusController extends Controller
             ],
         ], 200);
     }
+
+
+      /**
+     * @OA\Get(
+     *     path="/v1/menus/{id}",
+     *     summary="Get menu details",
+     *     tags={"Menus (Public)"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="User detail")
+     * )
+     */
+
+    public function show(Request $request){
+        $menu = Menu::findOrFail($request->id);
+
+        return response()->json([
+            'success'=> true,
+            'data'=> new MenusResource($menu),
+        ]);
+    }
 }

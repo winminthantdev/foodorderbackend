@@ -160,6 +160,30 @@ class AdminDriversController extends Controller
         }
     }
 
+      /**
+     * @OA\Get(
+     *     path="/v1/admin/drivers/{id}",
+     *     summary="Get driver details",
+     *     tags={"Drivers (Admin)"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Driver detail")
+     * )
+     */
+
+    public function show(Driver $driver){
+        $driver = Driver::findOrFail($driver->id);
+
+        return response()->json([
+            'success'=> true,
+            'data'=> new DriversResource($driver),
+        ]);
+    }
+
     /**
      * @OA\Put(
      *     path="/v1/admin/drivers/{id}",

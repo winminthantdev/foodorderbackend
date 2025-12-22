@@ -176,6 +176,30 @@ class AdminMenusController extends Controller
     }
 
     /**
+     * @OA\Get(
+     *     path="/v1/admin/menus/{id}",
+     *     summary="Get menu details",
+     *     tags={"Menus (Admin)"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="User detail")
+     * )
+     */
+
+    public function show(Menu $menu){
+        $menu = Menu::findOrFail($menu->id);
+
+        return response()->json([
+            'success'=> true,
+            'data'=> new MenusResource($menu),
+        ]);
+    }
+
+    /**
      * @OA\Put(
      *     path="/v1/admin/menus/{id}",
      *     summary="Update payment type",

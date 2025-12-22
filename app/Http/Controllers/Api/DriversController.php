@@ -77,4 +77,28 @@ class DriversController extends Controller
         ], 200);
     }
 
+      /**
+     * @OA\Get(
+     *     path="/v1/drivers/{id}",
+     *     summary="Get driver details",
+     *     tags={"Drivers (Public)"},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(response=200, description="Driver detail")
+     * )
+     */
+
+    public function show(Request $request){
+        $driver = Driver::findOrFail($request->id);
+
+        return response()->json([
+            'success'=> true,
+            'data'=> new DriversResource($driver),
+        ]);
+    }
+
 }
