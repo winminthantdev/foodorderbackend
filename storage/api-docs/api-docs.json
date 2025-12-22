@@ -4139,13 +4139,13 @@
                 }
             }
         },
-        "/v1/subcategories": {
+        "/v1/admin/subcategories": {
             "get": {
                 "tags": [
                     "SubCategories (for admin)"
                 ],
                 "summary": "Get all subcategories",
-                "operationId": "52b1dc2cec2581830e6ae76a9ef61116",
+                "operationId": "8f2e2844c027f6a5b84187d4fe2e0ccb",
                 "parameters": [
                     {
                         "name": "search",
@@ -4177,7 +4177,7 @@
                     "SubCategories"
                 ],
                 "summary": "Create new status",
-                "operationId": "d6175a619669d6b6d63f3c1837a3058c",
+                "operationId": "191456d989df072d6f765ce5d1cc3a84",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4217,13 +4217,13 @@
                 }
             }
         },
-        "/v1/subcategories/{id}": {
+        "/v1/admin/subcategories/{id}": {
             "put": {
                 "tags": [
                     "SubCategories"
                 ],
                 "summary": "Update a status",
-                "operationId": "71853fd45bfeddd9f0bc7c0a019e7500",
+                "operationId": "0d089a7f13211b54f8f381445de9a622",
                 "parameters": [
                     {
                         "name": "id",
@@ -4375,7 +4375,7 @@
                     "SubCategories"
                 ],
                 "summary": "Delete a status",
-                "operationId": "9b43ee3d03f53304abca904e2c852a09",
+                "operationId": "e4e231956c92d79e11f429e6d3efaa0a",
                 "parameters": [
                     {
                         "name": "id",
@@ -4473,7 +4473,7 @@
                     "Users (Admin)"
                 ],
                 "summary": "Create a new user",
-                "operationId": "96c5c8dab422a73944ca67e100d943b6",
+                "operationId": "ac73742f32d158434f3af4b2ccd24eb8",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -4978,6 +4978,176 @@
                     }
                 }
             }
+        },
+        "/v1/categories": {
+            "get": {
+                "tags": [
+                    "Categories ( public )"
+                ],
+                "summary": "Get all categories",
+                "operationId": "7ef9cead9c782dfee08f1eda442686ba",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "description": "Filter by category id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of categories"
+                    }
+                }
+            }
+        },
+        "/v1/drivers": {
+            "get": {
+                "tags": [
+                    "Drivers (Public)"
+                ],
+                "summary": "Get all drivers",
+                "operationId": "e5857aaea00990b574c1d52d6a2e26ba",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "description": "Filter by drivers id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of drivers"
+                    }
+                }
+            }
+        },
+        "/v1/menus": {
+            "get": {
+                "tags": [
+                    "Menus (Public)"
+                ],
+                "summary": "Get all menus",
+                "operationId": "14a3205cdc3e3f8f9dac42cb67f2483c",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "description": "Filter by status id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Menus list"
+                    }
+                }
+            }
+        },
+        "/v1/subcategories": {
+            "get": {
+                "tags": [
+                    "SubCategories (Public)"
+                ],
+                "summary": "Get all subcategories",
+                "operationId": "47955602103d48147eb1687aa02e12e6",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "description": "Filter by status id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of subcategories"
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -5056,6 +5226,22 @@
         {
             "name": "Variants (Admin)",
             "description": "Variants (Admin)"
+        },
+        {
+            "name": "Categories ( public )",
+            "description": "Categories ( public )"
+        },
+        {
+            "name": "Drivers (Public)",
+            "description": "Drivers (Public)"
+        },
+        {
+            "name": "Menus (Public)",
+            "description": "Menus (Public)"
+        },
+        {
+            "name": "SubCategories (Public)",
+            "description": "SubCategories (Public)"
         }
     ]
 }

@@ -37,7 +37,7 @@ use App\Http\Controllers\Api\Admin\AdminStatusesController;
 Route::prefix('v1')->group(function () {
 
     // PUBLIC ROUTES
-    Route::prefix('public')->group(function () {
+    Route::prefix('')->group(function () {
         Route::get('/categories', [CategoriesController::class, 'index']);
         Route::get('/subcategories', [SubCategoriesController::class, 'index']);
         Route::get('/menus', [MenusController::class, 'index']);

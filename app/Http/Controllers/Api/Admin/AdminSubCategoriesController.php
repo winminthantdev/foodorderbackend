@@ -13,7 +13,7 @@ class AdminSubCategoriesController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/v1/subcategories",
+     *     path="/v1/admin/subcategories",
      *     summary="Get all subcategories",
      *     tags={"SubCategories (for admin)"},
      *
@@ -67,7 +67,7 @@ class AdminSubCategoriesController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/v1/subcategories",
+     *     path="/v1/admin/subcategories",
      *     summary="Create new status",
      *     tags={"SubCategories"},
      *
@@ -137,7 +137,7 @@ class AdminSubCategoriesController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/v1/subcategories/{id}",
+     *     path="/v1/admin/subcategories/{id}",
      *     summary="Update a status",
      *     tags={"SubCategories"},
      *
@@ -266,7 +266,7 @@ class AdminSubCategoriesController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/v1/subcategories/{id}",
+     *     path="/v1/admin/subcategories/{id}",
      *     summary="Delete a status",
      *     tags={"SubCategories"},
      *
