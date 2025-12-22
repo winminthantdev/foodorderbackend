@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->decimal('amount', 10, 2);
-            $table->foreignId('order_id')->constrained('ordertypes')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained("users")->onDelete('cascade');
-            $table->foreignId('status_id')->default(1)->constrained('statuses')->onDelete('cascade');
+            $table->foreignId('order_id')->constrained('orders')->on('restrict');
+            $table->foreignId('user_id')->constrained("users")->onDelete('restrict');
+            $table->foreignId('stage_id')->default(1)->constrained('stages')->onDelete('cascade');
             $table->foreignId('paymenttype_id')->constrained('paymenttypes')->onDelete('cascade');
             $table->string('transaction_id')->nullable();
             $table->timestamps();

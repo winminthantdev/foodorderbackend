@@ -3,47 +3,72 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\User\PaymentTypesResource;
+use App\Models\PaymentType;
 use Illuminate\Http\Request;
 
 class UserPaymentTypesController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @OA\Get(
+     *     path="/v1/user/payment-types",
+     *     summary="Get all payment types",
+     *     tags={"PaymentTypes (User)"},
+     *     security={{"sanctum":{}}},
+     *
+     *     @OA\Parameter(
+     *         name="search",
+     *         in="query",
+     *
+     *         @OA\Schema(type="string")
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="status_id",
+     *         in="query",
+     *
+     *         @OA\Schema(type="integer", example=3)
+     *     ),
+     *
+     *     @OA\Parameter(
+     *         name="per_page",
+     *         in="query",
+     *
+     *         @OA\Schema(type="integer", example=10)
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="PaymentTypes list"
+     *     )
+     * )
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
-    }
+        $query = PaymentType::query();
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+        // Search
+        if ($request->has('search') && $request->search != '') {
+            $query->where('name', 'like', '%'.$request->search.'%');
+        }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
-    {
-        //
-    }
+        // Filter example: by paymenttype type
+        if ($request->has('status_id') && $request->status_id != '') {
+            $query->where('status_id', $request->status_id);
+        }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
+        // Pagination
+        $perPage = $request->get('per_page', 10);
+        $paymenttypes = $query->paginate($perPage);
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        return response()->json([
+            'data' => PaymentTypesResource::collection($paymenttypes),
+            'meta' => [
+                'current_page' => $paymenttypes->currentPage(),
+                'total_page' => $paymenttypes->lastPage(),
+                'per_page' => $paymenttypes->perPage(),
+                'total' => $paymenttypes->total(),
+            ],
+        ], 200);
     }
 }

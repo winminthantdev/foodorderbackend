@@ -122,8 +122,10 @@ class AdminOrdersController extends Controller
 
     public function store(Request $request)
     {
+        // $userId = auth()->id();
+        $userId = 2;
+
         $validator = Validator::make($request->all(), [
-            'user_id' => 'required|exists:users,id',
             'ordertype_id' => 'required|exists:ordertypes,id',
             'paymenttype_id' => 'required|exists:paymenttypes,id',
             'driver_id' => 'nullable|exists:drivers,id',
@@ -148,7 +150,23 @@ class AdminOrdersController extends Controller
             ], 422);
         }
 
-        $order = Order::create($request->all());
+        $order = Order::create([
+            'user_id'=> $userId,
+            "ordertype_id"=>  $request->ordertype_id,
+            "paymenttype_id"=>  $request->paymenttype_id,
+            "driver_id"=>  $request->driver_id,
+            "stage_id"=>  $request->stage_id,
+            "address_id"=>  $request->address_id,
+            "subtotal"=>  $request->subtotal,
+            "discount"=>  $request->discount,
+            "delivery_fee"=>  $request->delivery_fee,
+            "service_fee"=>  $request->service_fee,
+            "total"=>  $request->total,
+            "transaction_id"=>  $request->transaction_id,
+            "is_paid"=>  $request->is_paid,
+            "order_note" => $request->order_note,
+            "scheduled_at" => $request->scheduled_at,
+        ]);
 
         return response()->json([
             'success' => true,
@@ -186,8 +204,8 @@ class AdminOrdersController extends Controller
 
 
     /**
-     * @OA\Put(
-     *     path="/api/admin/orders/{id}",
+     * @OA\Patch(
+     *     path="/api/admin/orders/{id}/stage",
      *     tags={"Orders (Admin)"},
      *     summary="Update order",
      *     security={{"bearerAuth":{}}},
@@ -195,12 +213,17 @@ class AdminOrdersController extends Controller
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="order id to update stage",
+     *
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\RequestBody(
-     *         @OA\JsonContent(
-     *             @OA\Property(property="status", type="string", example="completed")
-     *         )
+     *     @OA\Parameter(
+     *         name="stage_id",
+     *         in="path",
+     *         required=true,
+     *         description="update order stage id",
+     *
+     *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -208,52 +231,38 @@ class AdminOrdersController extends Controller
      *     )
      * )
      */
-    public function update(Request $request, $id)
+    public function stage( Request $request, Order $order)
     {
-        $order = Order::find($id);
         if (!$order) {
             return response()->json(['success'=>false,'message'=>'Order not found'],404);
         }
 
         $validator = Validator::make($request->all(), [
-            'status' => 'required|string|in:pending,completed,cancelled',
+            'stage_id' => 'required|exists:stages,id',
         ]);
 
         if ($validator->fails()) {
             return response()->json(['success'=>false,'message'=>'Validation failed','errors'=>$validator->errors()],422);
         }
 
-        $order->update($request->only('status'));
+        try {
+            $order->update([
+                'stage_id'=> $request->stage_id
+            ]);
 
-        return response()->json(['success'=>true,'message'=>'Order updated successfully','data'=>new OrdersResource($order)]);
-    }
+            return response()->json([
+                'success'=> true,
+                'messange'=> 'Order State Successfully.'
+            ]);
 
-   /**
-     * @OA\Delete(
-     *     path="/api/admin/orders/{id}",
-     *     tags={"Orders (Admin)"},
-     *     summary="Delete order",
-     *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=204,
-     *         description="Order deleted successfully"
-     *     )
-     * )
-     */
-    public function destroy($id)
-    {
-        $order = Order::find($id);
-        if (!$order) {
-            return response()->json(['success'=>false,'message'=>'Order not found'],404);
+        }catch (\Exception $e) {
+            return response()->json([
+                'success'=> false,
+                'message'=> 'Failed to update order',
+                'error' => $e->getMessage(),
+            ], 500);
         }
 
-        $order->delete();
-        return response()->json(null, 204);
     }
+
 }

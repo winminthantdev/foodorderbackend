@@ -13,9 +13,9 @@ class AdminOrderTypesController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/v1/ordertypes",
+     *     path="/v1/admin/ordertypes",
      *     summary="Get all ordertypes",
-     *     tags={"OrderTypes"},
+     *     tags={"OrderTypes (Admin)"},
      *
      *     @OA\Parameter(
      *         name="search",
@@ -81,9 +81,9 @@ class AdminOrderTypesController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/v1/ordertypes",
+     *     path="/v1/admin/ordertypes",
      *     summary="Create new paymenttype",
-     *     tags={"OrderTypes"},
+     *     tags={"OrderTypes (Admin)"},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -150,9 +150,9 @@ class AdminOrderTypesController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/v1/ordertypes/{id}",
+     *     path="/v1/admin/ordertypes/{id}",
      *     summary="Update a paymenttype",
-     *     tags={"OrderTypes"},
+     *     tags={"OrderTypes (Admin)"},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -283,9 +283,9 @@ class AdminOrderTypesController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/v1/ordertypes/{id}",
+     *     path="/v1/admin/ordertypes/{id}",
      *     summary="Delete a paymenttype",
-     *     tags={"OrderTypes"},
+     *     tags={"OrderTypes (Admin)"},
      *
      *     @OA\Parameter(
      *         name="id",

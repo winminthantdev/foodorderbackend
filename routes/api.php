@@ -47,12 +47,11 @@ Route::prefix('v1')->group(function () {
     });
 
     // USER ROUTES
-    Route::middleware('auth:sanctum')->prefix('user')->group(function () {
-
+    Route::prefix('user')->group(function () {
         Route::get('/profile', [UserInfosController::class, 'show']);
         Route::put('/profile', [UserInfosController::class, 'update']);
 
-        Route::get('/order-types', [UserOrderTypesController::class, 'index']);
+        Route::get('/ordertypes', [UserOrderTypesController::class, 'index']);
 
         Route::resource('/orders', UserOrdersController::class);
         Route::resource('/addresses', UserAddressesController::class);
@@ -62,6 +61,10 @@ Route::prefix('v1')->group(function () {
         Route::post('/payments', [UserPaymentsController::class, 'store']);
 
         Route::get('/payment-types', [UserPaymentTypesController::class, 'index']);
+
+    });
+    Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+
 
     });
 
@@ -74,6 +77,7 @@ Route::prefix('v1')->group(function () {
         Route::resource('drivers', AdminDriversController::class);
         Route::resource('order-types', AdminOrderTypesController::class);
         Route::resource('orders', AdminOrdersController::class);
+        Route::patch('orders/{id}/stage', [AdminOrdersController::class, 'stage']);
         Route::prefix('order-items')->group(function () {
             Route::get('order-items', [AdminOrderItemsController::class, 'index']);
             Route::get('order-items/{id}', [AdminOrderItemsController::class, 'show']);

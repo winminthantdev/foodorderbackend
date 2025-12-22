@@ -20,7 +20,7 @@ class AdminPaymentsController extends Controller
      *         in="query",
      *         description="Filter by payment status",
      *         required=false,
-     *         @OA\Schema(type="integer", example=3)
+     *         @OA\Schema(type="integer")
      *     ),
      *
      *     @OA\Parameter(
@@ -28,7 +28,7 @@ class AdminPaymentsController extends Controller
      *         in="query",
      *         description="Filter by user ID",
      *         required=false,
-     *         @OA\Schema(type="integer", example=12)
+     *         @OA\Schema(type="integer")
      *     ),
      *
      *     @OA\Parameter(
@@ -36,7 +36,7 @@ class AdminPaymentsController extends Controller
      *         in="query",
      *         description="Number of items per page",
      *         required=false,
-     *         @OA\Schema(type="integer", example=12)
+     *         @OA\Schema(type="integer")
      *     ),
      *
      *     @OA\Response(
@@ -57,7 +57,7 @@ class AdminPaymentsController extends Controller
      * )
      */
 
-    
+
     public function index(Request $request)
     {
         $query = Payment::query();

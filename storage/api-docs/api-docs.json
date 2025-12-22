@@ -2137,13 +2137,13 @@
                 }
             }
         },
-        "/v1/ordertypes": {
+        "/v1/admin/ordertypes": {
             "get": {
                 "tags": [
-                    "OrderTypes"
+                    "OrderTypes (Admin)"
                 ],
                 "summary": "Get all ordertypes",
-                "operationId": "13237204adf59e67bcc897a6028804f3",
+                "operationId": "6450759ed12b453d7e906fa6c7e3aa50",
                 "parameters": [
                     {
                         "name": "search",
@@ -2181,10 +2181,10 @@
             },
             "post": {
                 "tags": [
-                    "OrderTypes"
+                    "OrderTypes (Admin)"
                 ],
                 "summary": "Create new paymenttype",
-                "operationId": "de3492b289c03e13c71972309b376910",
+                "operationId": "9cef119472e3a440fa73eed6b6281b1a",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -2224,13 +2224,13 @@
                 }
             }
         },
-        "/v1/ordertypes/{id}": {
+        "/v1/admin/ordertypes/{id}": {
             "put": {
                 "tags": [
-                    "OrderTypes"
+                    "OrderTypes (Admin)"
                 ],
                 "summary": "Update a paymenttype",
-                "operationId": "b141b43093d0125cb39295dc1b4db7b4",
+                "operationId": "ebfe4d84693f35940d3fa23ecd8ba609",
                 "parameters": [
                     {
                         "name": "id",
@@ -2379,10 +2379,10 @@
             },
             "delete": {
                 "tags": [
-                    "OrderTypes"
+                    "OrderTypes (Admin)"
                 ],
                 "summary": "Delete a paymenttype",
-                "operationId": "4a5887faad07d7f2168706904fdb35f0",
+                "operationId": "b25942fbe9f9f787043624fcc54dd8e0",
                 "parameters": [
                     {
                         "name": "id",
@@ -2637,68 +2637,38 @@
                         "bearerAuth": []
                     }
                 ]
-            },
-            "put": {
+            }
+        },
+        "/api/admin/orders/{id}/stage": {
+            "patch": {
                 "tags": [
                     "Orders (Admin)"
                 ],
                 "summary": "Update order",
-                "operationId": "05a5a6fb497cb5d6f0c9b62e6bfd3de3",
+                "operationId": "25d2ac528dc34b1b77dc7b7020354738",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "order id to update stage",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "stage_id",
+                        "in": "path",
+                        "description": "update order stage id",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "status": {
-                                        "type": "string",
-                                        "example": "completed"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Order updated successfully"
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            },
-            "delete": {
-                "tags": [
-                    "Orders (Admin)"
-                ],
-                "summary": "Delete order",
-                "operationId": "83e38ac8ee8b1b7dac00468c0b7bbda5",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "204": {
-                        "description": "Order deleted successfully"
                     }
                 },
                 "security": [
@@ -2910,8 +2880,7 @@
                         "description": "Filter by payment status",
                         "required": false,
                         "schema": {
-                            "type": "integer",
-                            "example": 3
+                            "type": "integer"
                         }
                     },
                     {
@@ -2920,8 +2889,7 @@
                         "description": "Filter by user ID",
                         "required": false,
                         "schema": {
-                            "type": "integer",
-                            "example": 12
+                            "type": "integer"
                         }
                     },
                     {
@@ -2930,8 +2898,7 @@
                         "description": "Number of items per page",
                         "required": false,
                         "schema": {
-                            "type": "integer",
-                            "example": 12
+                            "type": "integer"
                         }
                     }
                 ],
@@ -5240,6 +5207,412 @@
                     }
                 }
             }
+        },
+        "/v1/user/ordertypes": {
+            "get": {
+                "tags": [
+                    "OrderTypes (User)"
+                ],
+                "summary": "Get all ordertypes",
+                "operationId": "1f2572434bbe76f6ed1fe13447386c1b",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "description": "Filter by status id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of ordertypes"
+                    }
+                }
+            }
+        },
+        "/v1/user/orders": {
+            "get": {
+                "tags": [
+                    "Orders (User)"
+                ],
+                "summary": "Get all orders",
+                "operationId": "ae40bd7233855e22be39aa3f075919fd",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "description": "Filter by orders id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of orders"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Orders (User)"
+                ],
+                "summary": "Create new orders",
+                "operationId": "e51a637b4fac0ebc9d5c6469d4af91c5",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "user_id",
+                                    "ordertype_id",
+                                    "paymenttype_id",
+                                    "stage_id",
+                                    "subtotal",
+                                    "discount",
+                                    "delivery_fee",
+                                    "service_fee",
+                                    "total",
+                                    "is_paid"
+                                ],
+                                "properties": {
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "ordertype_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "paymenttype_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "driver_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "address_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "subtotal": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 50
+                                    },
+                                    "discount": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 5
+                                    },
+                                    "delivery_fee": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 3
+                                    },
+                                    "service_fee": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 2
+                                    },
+                                    "total": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 50
+                                    },
+                                    "transaction_id": {
+                                        "type": "string",
+                                        "example": "TX123456789"
+                                    },
+                                    "is_paid": {
+                                        "type": "boolean",
+                                        "example": true
+                                    },
+                                    "order_note": {
+                                        "type": "string",
+                                        "example": "Please deliver between 5-6 PM"
+                                    },
+                                    "scheduled_at": {
+                                        "type": "string",
+                                        "format": "date-time",
+                                        "example": "2025-12-15T17:00:00Z"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Created"
+                    },
+                    "422": {
+                        "description": "Validation error"
+                    }
+                }
+            }
+        },
+        "/api/user/orders/{id}": {
+            "get": {
+                "tags": [
+                    "Orders (User)"
+                ],
+                "summary": "Get order by ID",
+                "operationId": "94db45f5c1f6e6ab146c2698e9a86dea",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Order retrieved successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/user/payment-types": {
+            "get": {
+                "tags": [
+                    "PaymentTypes (User)"
+                ],
+                "summary": "Get all payment types",
+                "operationId": "8ec094db3f112f7da99a0a8b0569b370",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "schema": {
+                            "type": "integer",
+                            "example": 10
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "PaymentTypes list"
+                    }
+                },
+                "security": [
+                    {
+                        "sanctum": []
+                    }
+                ]
+            }
+        },
+        "/v1/user/payments": {
+            "post": {
+                "tags": [
+                    "Payments (User)"
+                ],
+                "summary": "Store a new payment",
+                "description": "Processes a payment for a specific order and records it in the database.",
+                "operationId": "a750cd066a927aedac0d01c9505039ab",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "order_id",
+                                    "paymenttype_id",
+                                    "amount"
+                                ],
+                                "properties": {
+                                    "order_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "paymenttype_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "example": 99.99
+                                    },
+                                    "transaction_id": {
+                                        "type": "string",
+                                        "example": "TXN_123456789"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Payment created successfully",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "user_id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "order_id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "amount": {
+                                            "type": "number",
+                                            "format": "float",
+                                            "example": 99.99
+                                        },
+                                        "paymenttype_id": {
+                                            "type": "integer",
+                                            "example": 2
+                                        },
+                                        "transaction_id": {
+                                            "type": "string",
+                                            "example": "TXN_123456789"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-12-22T12:00:00Z"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time",
+                                            "example": "2025-12-22T12:00:00Z"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/user/promotions": {
+            "get": {
+                "tags": [
+                    "Promotions (User)"
+                ],
+                "summary": "Get all promotions",
+                "operationId": "1bf0e3a199e737533b7b02e9e43d8903",
+                "parameters": [
+                    {
+                        "name": "search",
+                        "in": "query",
+                        "description": "Search by name",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "status_id",
+                        "in": "query",
+                        "description": "Filter by promotion id",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "Items per page",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "List of promotions"
+                    }
+                }
+            }
         }
     },
     "tags": [
@@ -5272,8 +5645,8 @@
             "description": "Order Items (Admin)"
         },
         {
-            "name": "OrderTypes",
-            "description": "OrderTypes"
+            "name": "OrderTypes (Admin)",
+            "description": "OrderTypes (Admin)"
         },
         {
             "name": "Orders (Admin)",
@@ -5334,6 +5707,26 @@
         {
             "name": "SubCategories (Public)",
             "description": "SubCategories (Public)"
+        },
+        {
+            "name": "OrderTypes (User)",
+            "description": "OrderTypes (User)"
+        },
+        {
+            "name": "Orders (User)",
+            "description": "Orders (User)"
+        },
+        {
+            "name": "PaymentTypes (User)",
+            "description": "PaymentTypes (User)"
+        },
+        {
+            "name": "Payments (User)",
+            "description": "Payments (User)"
+        },
+        {
+            "name": "Promotions (User)",
+            "description": "Promotions (User)"
         }
     ]
 }

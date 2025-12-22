@@ -35,6 +35,10 @@ class Order extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function stage(){
+        return $this->belongsTo(Stage::class);
+    }
+
     public function ordertype()
     {
         return $this->belongsTo(OrderType::class);
@@ -63,6 +67,10 @@ class Order extends Model
     public function items()
     {
         return $this->hasMany(OrderItem::class);
+    }
+
+    public function payments(){
+        return $this->hasMany(Payment::class);
     }
 
 }

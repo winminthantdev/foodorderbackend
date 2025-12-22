@@ -52,7 +52,7 @@ class OrdersResource extends JsonResource
             "service_fee"=> $this->service_fee,
             "total"=> $this->total,
             "transaction_id"=> $this->transaction_id,
-            "is_paid"=> $this->is_paid,
+            "is_paid"=> (bool) $this->is_paid,
             "order_note"=> $this->order_note,
             "scheduled_at"=> $this->scheduled_at,
             "created_at"=> $this->created_at->format("d m Y"),
