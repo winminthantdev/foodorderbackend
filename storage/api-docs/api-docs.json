@@ -5208,6 +5208,446 @@
                 }
             }
         },
+        "/v1/user/addresses": {
+            "get": {
+                "tags": [
+                    "Addresses (User)"
+                ],
+                "summary": "Get all user addresses",
+                "operationId": "b3d23317dd75bd8c0e423137251d4189",
+                "responses": {
+                    "200": {
+                        "description": "List of addresses",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "label": {
+                                            "type": "string",
+                                            "example": "Home"
+                                        },
+                                        "address_line1": {
+                                            "type": "string"
+                                        },
+                                        "address_line2": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "is_default": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-12-21"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-12-21"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "post": {
+                "tags": [
+                    "Addresses (User)"
+                ],
+                "summary": "Create a new address",
+                "operationId": "724f776361b82a8895efe659a4aa5fa6",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "label",
+                                    "address_line1",
+                                    "city"
+                                ],
+                                "properties": {
+                                    "label": {
+                                        "type": "string",
+                                        "example": "Home"
+                                    },
+                                    "address_line1": {
+                                        "type": "string",
+                                        "example": "123 Main Street"
+                                    },
+                                    "address_line2": {
+                                        "type": "string",
+                                        "example": "Apartment 4B"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "Yangon"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "example": 16.8409
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "example": 96.1735
+                                    },
+                                    "is_default": {
+                                        "type": "boolean",
+                                        "example": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Address created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "label": {
+                                            "type": "string",
+                                            "example": "Home"
+                                        },
+                                        "address_line1": {
+                                            "type": "string"
+                                        },
+                                        "address_line2": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "is_default": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-12-21"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-12-21"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/v1/user/addresses/{id}": {
+            "get": {
+                "tags": [
+                    "Addresses (User)"
+                ],
+                "summary": "Get a single address",
+                "operationId": "a40af199e45576c4a9e716babf5f759b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Address found",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "label": {
+                                            "type": "string",
+                                            "example": "Home"
+                                        },
+                                        "address_line1": {
+                                            "type": "string"
+                                        },
+                                        "address_line2": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "is_default": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-12-21"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-12-21"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Addresses (User)"
+                ],
+                "summary": "Update an address",
+                "operationId": "f60e89825b5d510c055cc60c84d00b81",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "label",
+                                    "address_line1",
+                                    "city"
+                                ],
+                                "properties": {
+                                    "label": {
+                                        "type": "string",
+                                        "example": "Office"
+                                    },
+                                    "address_line1": {
+                                        "type": "string",
+                                        "example": "456 Office Road"
+                                    },
+                                    "address_line2": {
+                                        "type": "string",
+                                        "example": "Floor 3"
+                                    },
+                                    "city": {
+                                        "type": "string",
+                                        "example": "Mandalay"
+                                    },
+                                    "latitude": {
+                                        "type": "number",
+                                        "example": 21.9588
+                                    },
+                                    "longitude": {
+                                        "type": "number",
+                                        "example": 96.0891
+                                    },
+                                    "is_default": {
+                                        "type": "boolean",
+                                        "example": false
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Address updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "label": {
+                                            "type": "string",
+                                            "example": "Home"
+                                        },
+                                        "address_line1": {
+                                            "type": "string"
+                                        },
+                                        "address_line2": {
+                                            "type": "string",
+                                            "nullable": true
+                                        },
+                                        "city": {
+                                            "type": "string"
+                                        },
+                                        "latitude": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "longitude": {
+                                            "type": "number",
+                                            "nullable": true
+                                        },
+                                        "is_default": {
+                                            "type": "boolean"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "example": "2025-12-21"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "example": "2025-12-21"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found"
+                    },
+                    "422": {
+                        "description": "Validation failed"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Addresses (User)"
+                ],
+                "summary": "Delete an address",
+                "operationId": "85c09882410243ac0b58f1c7062ed1b9",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Address deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Address deleted successfully"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Address not found"
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/v1/user/ordertypes": {
             "get": {
                 "tags": [
@@ -5483,8 +5923,7 @@
                             "schema": {
                                 "required": [
                                     "order_id",
-                                    "paymenttype_id",
-                                    "amount"
+                                    "paymenttype_id"
                                 ],
                                 "properties": {
                                     "order_id": {
@@ -5494,10 +5933,6 @@
                                     "paymenttype_id": {
                                         "type": "integer",
                                         "example": 2
-                                    },
-                                    "amount": {
-                                        "type": "number",
-                                        "example": 99.99
                                     },
                                     "transaction_id": {
                                         "type": "string",
@@ -5516,40 +5951,46 @@
                             "application/json": {
                                 "schema": {
                                     "properties": {
-                                        "id": {
-                                            "type": "integer",
-                                            "example": 1
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
                                         },
-                                        "user_id": {
-                                            "type": "integer",
-                                            "example": 2
-                                        },
-                                        "order_id": {
-                                            "type": "integer",
-                                            "example": 1
-                                        },
-                                        "amount": {
-                                            "type": "number",
-                                            "format": "float",
-                                            "example": 99.99
-                                        },
-                                        "paymenttype_id": {
-                                            "type": "integer",
-                                            "example": 2
-                                        },
-                                        "transaction_id": {
+                                        "message": {
                                             "type": "string",
-                                            "example": "TXN_123456789"
+                                            "example": "Payment completed successfully"
                                         },
-                                        "created_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2025-12-22T12:00:00Z"
-                                        },
-                                        "updated_at": {
-                                            "type": "string",
-                                            "format": "date-time",
-                                            "example": "2025-12-22T12:00:00Z"
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "user_id": {
+                                                    "type": "integer",
+                                                    "example": 2
+                                                },
+                                                "order_id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "amount": {
+                                                    "type": "number",
+                                                    "example": 99.99
+                                                },
+                                                "status": {
+                                                    "type": "string",
+                                                    "example": "success"
+                                                },
+                                                "created_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                },
+                                                "updated_at": {
+                                                    "type": "string",
+                                                    "format": "date-time"
+                                                }
+                                            },
+                                            "type": "object"
                                         }
                                     },
                                     "type": "object"
@@ -5707,6 +6148,10 @@
         {
             "name": "SubCategories (Public)",
             "description": "SubCategories (Public)"
+        },
+        {
+            "name": "Addresses (User)",
+            "description": "Addresses (User)"
         },
         {
             "name": "OrderTypes (User)",
