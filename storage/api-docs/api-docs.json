@@ -3844,13 +3844,13 @@
                 }
             }
         },
-        "/v1/statuses": {
+        "/v1/admin/statuses": {
             "get": {
                 "tags": [
-                    "Statuses (for admin)"
+                    "Statuses ( Admin )"
                 ],
                 "summary": "Get all statuses",
-                "operationId": "63d70daffe02fbdcf7ce89c4ac0479ce",
+                "operationId": "e1193216d8ed27e7b17b8337e95868d8",
                 "parameters": [
                     {
                         "name": "search",
@@ -3879,10 +3879,10 @@
             },
             "post": {
                 "tags": [
-                    "Statuses"
+                    "Statuses ( Admin )"
                 ],
                 "summary": "Create new status",
-                "operationId": "d2dff697ecce6d889eec24767a0822d3",
+                "operationId": "1217991d9f0ee3d8cf1480181ad5763c",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -3912,13 +3912,13 @@
                 }
             }
         },
-        "/v1/statuses/{id}": {
+        "/v1/admin/statuses/{id}": {
             "put": {
                 "tags": [
-                    "Statuses"
+                    "Statuses ( Admin )"
                 ],
                 "summary": "Update a status",
-                "operationId": "2aecc44ad77c6abd36acd1d69603ad13",
+                "operationId": "214cb2b2c58d5cd12081c8759f647731",
                 "parameters": [
                     {
                         "name": "id",
@@ -4067,10 +4067,10 @@
             },
             "delete": {
                 "tags": [
-                    "Statuses"
+                    "Statuses ( Admin )"
                 ],
                 "summary": "Delete a status",
-                "operationId": "ddc3fb9357293f90ec0693936b474f7e",
+                "operationId": "027bcb4984d0840c8646ed741816d7b0",
                 "parameters": [
                     {
                         "name": "id",
@@ -6630,12 +6630,8 @@
             "description": "Stages"
         },
         {
-            "name": "Statuses (for admin)",
-            "description": "Statuses (for admin)"
-        },
-        {
-            "name": "Statuses",
-            "description": "Statuses"
+            "name": "Statuses ( Admin )",
+            "description": "Statuses ( Admin )"
         },
         {
             "name": "SubCategories (for admin)",

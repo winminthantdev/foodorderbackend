@@ -13,9 +13,9 @@ class AdminStatusesController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/v1/statuses",
+     *     path="/v1/admin/statuses",
      *     summary="Get all statuses",
-     *     tags={"Statuses (for admin)"},
+     *     tags={"Statuses ( Admin )"},
      *
      *     @OA\Parameter(
      *         name="search",
@@ -67,9 +67,9 @@ class AdminStatusesController extends Controller
 
     /**
      * @OA\Post(
-     *     path="/v1/statuses",
+     *     path="/v1/admin/statuses",
      *     summary="Create new status",
-     *     tags={"Statuses"},
+     *     tags={"Statuses ( Admin )"},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -132,9 +132,9 @@ class AdminStatusesController extends Controller
 
     /**
      * @OA\Put(
-     *     path="/v1/statuses/{id}",
+     *     path="/v1/admin/statuses/{id}",
      *     summary="Update a status",
-     *     tags={"Statuses"},
+     *     tags={"Statuses ( Admin )"},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -261,9 +261,9 @@ class AdminStatusesController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/v1/statuses/{id}",
+     *     path="/v1/admin/statuses/{id}",
      *     summary="Delete a status",
-     *     tags={"Statuses"},
+     *     tags={"Statuses ( Admin )"},
      *
      *     @OA\Parameter(
      *         name="id",

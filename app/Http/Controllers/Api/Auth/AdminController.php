@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Admin;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\ValidationException;
 
 class AdminController extends Controller
 {
@@ -16,7 +15,7 @@ class AdminController extends Controller
     public function login(Request $request)
     {
         // Validate input
-        $request->validate([
+        $validator = \Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required|string',
         ]);
@@ -25,13 +24,14 @@ class AdminController extends Controller
         $admin = Admin::where('email', $request->email)->first();
 
         if (! $admin || ! Hash::check($request->password, $admin->password)) {
-            throw ValidationException::withMessages([
-                'email' => ['The provided credentials are incorrect.'],
-            ]);
+            return response()->json([
+                'success' => false,
+                'message'=> 'Invalid credentials'
+            ],401);
         }
 
         //  Create API token
-        $token = $admin->createToken('admin-token')->plainTextToken;
+        $token = $admin->createToken('admin')->plainTextToken;
 
         // Return response
         return response()->json([
@@ -47,7 +47,8 @@ class AdminController extends Controller
     public function logout(Request $request)
     {
         // Revoke all tokens for this admin
-        $request->user('admin')->tokens()->delete();
+        // $request->user('admin')->tokens()->delete();
+        $request->user()->currentAccessToken()->delete();
 
         return response()->json([
             'message' => 'Logged out successfully'

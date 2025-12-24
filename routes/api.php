@@ -1,6 +1,7 @@
 <?php
 
 // Public Controllers
+use App\Http\Controllers\Api\Auth\AdminController;
 use App\Http\Controllers\Api\CategoriesController;
 use App\Http\Controllers\Api\DriversController;
 use App\Http\Controllers\Api\MenusController;
@@ -36,6 +37,9 @@ use App\Http\Controllers\Api\Admin\AdminStatusesController;
 
 Route::prefix('v1')->group(function () {
 
+    // Admin Login Routes
+    Route::post('/admin/login', [AdminController::class,'login']);
+
     // PUBLIC ROUTES
     Route::prefix('')->group(function () {
         Route::get('/categories', [CategoriesController::class, 'index']);
@@ -47,7 +51,7 @@ Route::prefix('v1')->group(function () {
     });
 
     // USER ROUTES
-    Route::prefix('user')->group(function () {
+    Route::middleware('auth:sanctum')->prefix('user')->group(function () {
         Route::get('/profile', [UserInfosController::class, 'show']);
         Route::post('/profile', [UserInfosController::class, 'store']);
         Route::put('/profile', [UserInfosController::class, 'update']);
@@ -67,13 +71,10 @@ Route::prefix('v1')->group(function () {
         Route::get('/payment-types', [UserPaymentTypesController::class, 'index']);
 
     });
-    Route::middleware('auth:sanctum')->prefix('user')->group(function () {
-
-
-    });
 
     // ADMIN ROUTES
-    Route::prefix('admin')->group(function () {
+
+    Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
         Route::resource('addons', AdminAddonsController::class);
         Route::resource('categories', AdminCategoriesController::class);
         Route::resource('subcategories', AdminSubCategoriesController::class);
@@ -103,10 +104,10 @@ Route::prefix('v1')->group(function () {
             Route::patch('{id}/unblock', [AdminUsersController::class, 'unblock']);
         });
         Route::resource('variants', AdminVariantsController::class);
+
+        Route::post('/admin/logout', [AdminController::class,'logout']);
+
     });
-
-
-    Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {});
 
 });
 
