@@ -5648,6 +5648,36 @@
                 ]
             }
         },
+        "/v1/user/addresses/{id}/default": {
+            "patch": {
+                "tags": [
+                    "Addresses (User)"
+                ],
+                "summary": "Update address as default",
+                "operationId": "8aa4aab58ad1b273a39f64802f741035",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "address id to update as default",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Default address updated successfully"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/v1/user/ordertypes": {
             "get": {
                 "tags": [

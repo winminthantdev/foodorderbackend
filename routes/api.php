@@ -55,6 +55,7 @@ Route::prefix('v1')->group(function () {
 
         Route::resource('/orders', UserOrdersController::class);
         Route::resource('/addresses', UserAddressesController::class);
+        Route::patch('/addresses/{id}/default', [UserAddressesController::class,'setDefault']);
 
         Route::get('/promotions', [UserPromotionsController::class, 'index']);
 

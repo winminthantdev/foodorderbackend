@@ -12,6 +12,7 @@ class UserInfosController extends Controller
 {
     /**
      * Get current user's profile
+     * 
      */
     public function show()
     {

@@ -125,6 +125,7 @@ class UserAddressesController extends Controller
 
         $address = Address::create([
             'user_id'      => $userId,
+            'label' => $request->label,
             'address_line1' => $request->address_line1,
             'address_line2' => $request->address_line2,
             'city' => $request->city,
@@ -329,4 +330,50 @@ class UserAddressesController extends Controller
 
         return response()->json(['success'=>true,'message'=>'Address deleted successfully']);
     }
+
+    // default address change function
+    /**
+     * @OA\Patch(
+     *      path="/v1/user/addresses/{id}/default",
+     *      summary="Update address as default",
+     *      tags = {"Addresses (User)"},
+     *      security={{"bearerAuth": {}}},
+     *
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          required=true,
+     *          description="address id to update as default",
+     *
+     *          @OA\Schema(type="integer")
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="Default address updated successfully",
+     *      )
+     * )
+     */
+    public function setDefault($id){
+
+        // TEMP (replace with auth()->id())
+        $userId = 2;
+
+        $address = Address::where("id", $id)->where('user_id', $userId)->first();
+
+        if (!$address) {
+            return response()->json(['success'=>false,'message'=> 'Address not found'],404);
+        }
+
+        \DB::transaction(function () use ($userId,$address) {
+
+            // Remove previous default
+            $address::where('user_id', $userId)->where('is_default', true)->update(['is_default' => false]);
+
+            // Set new default
+            $address->update(['is_default'=> true]);
+        });
+
+        return response()->json(['success'=>true,'message'=> 'Default address updated successfully']);
+    }
+
 }
