@@ -241,6 +241,7 @@ class AdminPaymentTypesController extends Controller
                 if(File::exists(public_path($oldIcon))) {
                     File::delete(public_path($oldIcon));
                 }
+
                 // Single Image Upload
                 $file = $request->file('icon');
                 $newfilename = uniqid().'_'.time().'.'.$file->getClientOriginalExtension();
@@ -304,7 +305,15 @@ class AdminPaymentTypesController extends Controller
 
         try {
             // Delete record
+            $oldIcon = $paymenttype->icon;
+
+                if(File::exists(public_path($oldIcon))) {
+                    File::delete(public_path($oldIcon));
+                }
+                
             $paymenttype->delete();
+
+
 
             return response()->json([
                 'success' => true,

@@ -49,7 +49,10 @@ Route::prefix('v1')->group(function () {
     // USER ROUTES
     Route::prefix('user')->group(function () {
         Route::get('/profile', [UserInfosController::class, 'show']);
+        Route::post('/profile', [UserInfosController::class, 'store']);
         Route::put('/profile', [UserInfosController::class, 'update']);
+        Route::patch('/profile/avatar', [UserInfosController::class, 'updateAvatar']);
+        Route::patch('/profile/notification', [UserInfosController::class, 'notifyUpdate']);
 
         Route::get('/ordertypes', [UserOrderTypesController::class, 'index']);
 

@@ -22,6 +22,10 @@ class Userinfo extends Model
         'is_blocked',
     ];
 
+    protected $casts = [
+        'notification_enabled' => 'boolean',
+    ];
+
     public function user(){
         return $this->belongsTo(User::class);
     }
