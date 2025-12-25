@@ -38,7 +38,7 @@ use App\Http\Controllers\Api\Admin\AdminStatusesController;
 Route::prefix('v1')->group(function () {
 
     // Admin Login Routes
-    Route::post('/admin/login', [AdminController::class,'login']);
+    Route::post('admin/login', [AdminController::class,'login']);
 
     // PUBLIC ROUTES
     Route::prefix('')->group(function () {
@@ -105,7 +105,7 @@ Route::prefix('v1')->group(function () {
         });
         Route::resource('variants', AdminVariantsController::class);
 
-        Route::post('/admin/logout', [AdminController::class,'logout']);
+        Route::post('/logout', [AdminController::class,'logout']);
 
     });
 

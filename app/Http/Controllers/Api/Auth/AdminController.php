@@ -35,9 +35,13 @@ class AdminController extends Controller
 
         // Return response
         return response()->json([
-            'admin' => $admin,
+            'admin' => [
+                'id' => $admin->id,
+                'name' => $admin->name,
+                'email'=> $admin->email
+            ],
             'token' => $token,
-            'token_type' => 'Bearer',
+            'token_type' => 'Bearer'
         ]);
     }
 

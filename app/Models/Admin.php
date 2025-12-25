@@ -20,6 +20,7 @@ class Admin extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'tokens',
     ];
 
     // Optional: cast timestamps
