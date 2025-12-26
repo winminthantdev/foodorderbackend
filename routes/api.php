@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 // Public Controllers
 use App\Http\Controllers\Api\Auth\AdminController;
 use App\Http\Controllers\Api\CategoriesController;
@@ -37,82 +39,94 @@ use App\Http\Controllers\Api\Admin\AdminStatusesController;
 
 Route::prefix('v1')->group(function () {
 
-    // Admin Login Routes
+    Route::middleware(['auth:sanctum', 'admin'])
+    ->get('/api/v1/admin/test', fn() => response()->json(['message' => 'Welcome Admin']));
+
+Route::middleware(['auth:sanctum', 'user'])
+    ->get('/api/v1/user/test', fn() => response()->json(['message' => 'Welcome User']));
+
+
+    // =======================
+    // PUBLIC ROUTES
+    // =======================
+    Route::get('/categories', [CategoriesController::class, 'index']);
+    Route::get('/subcategories', [SubCategoriesController::class, 'index']);
+    Route::get('/menus', [MenusController::class, 'index']);
+    Route::get('/menus/{id}', [MenusController::class, 'show']);
+    Route::get('/drivers', [DriversController::class, 'index']);
+    Route::get('/drivers/{id}', [DriversController::class, 'show']);
+
+    // =======================
+    // ADMIN AUTH
+    // =======================
     Route::post('admin/login', [AdminController::class,'login']);
 
-    // PUBLIC ROUTES
-    Route::prefix('')->group(function () {
-        Route::get('/categories', [CategoriesController::class, 'index']);
-        Route::get('/subcategories', [SubCategoriesController::class, 'index']);
-        Route::get('/menus', [MenusController::class, 'index']);
-        Route::get('/menus/{id}', [MenusController::class, 'show']);
-        Route::get('/drivers', [DriversController::class, 'index']);
-        Route::get('/drivers/{id}', [DriversController::class, 'show']);
-    });
+    // =======================
+    // USER ROUTES (LOGIN REQUIRED)
+    // =======================
+    Route::middleware(['auth:sanctum', 'user'])->prefix('user')->as('user.')->group(function () {
 
-    // USER ROUTES
-    Route::middleware('auth:sanctum')->prefix('user')->group(function () {
+        // Profile
         Route::get('/profile', [UserInfosController::class, 'show']);
         Route::post('/profile', [UserInfosController::class, 'store']);
         Route::put('/profile', [UserInfosController::class, 'update']);
         Route::patch('/profile/avatar', [UserInfosController::class, 'updateAvatar']);
         Route::patch('/profile/notification', [UserInfosController::class, 'notifyUpdate']);
 
-        Route::get('/ordertypes', [UserOrderTypesController::class, 'index']);
-
-        Route::resource('/orders', UserOrdersController::class);
-        Route::resource('/addresses', UserAddressesController::class);
+        // Orders & Addresses
+        Route::resource('/orders', UserOrdersController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('/addresses', UserAddressesController::class,['only' => ['index', 'store', 'update', 'show']]);
         Route::patch('/addresses/{id}/default', [UserAddressesController::class,'setDefault']);
 
+        // Order types, promotions, payments
+        Route::get('/ordertypes', [UserOrderTypesController::class, 'index']);
         Route::get('/promotions', [UserPromotionsController::class, 'index']);
-
         Route::post('/payments', [UserPaymentsController::class, 'store']);
-
         Route::get('/payment-types', [UserPaymentTypesController::class, 'index']);
-
     });
 
-    // ADMIN ROUTES
+    // =======================
+    // ADMIN ROUTES (ADMIN ONLY)
+    // =======================
 
-    Route::middleware(['auth:sanctum', 'admin'])->prefix('admin')->group(function () {
-        Route::resource('addons', AdminAddonsController::class);
-        Route::resource('categories', AdminCategoriesController::class);
+    Route::middleware(['auth:sanctum','admin'])->prefix('admin')->as('admin.')->group(function () {
+
+        // CRUD Resources
+        Route::resource('addons', AdminAddonsController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('categories', AdminCategoriesController::class,['only' => ['index', 'store', 'update', 'show']]);
         Route::resource('subcategories', AdminSubCategoriesController::class);
-        Route::resource('menus', AdminMenusController::class);
-        Route::resource('drivers', AdminDriversController::class);
-        Route::resource('order-types', AdminOrderTypesController::class);
-        Route::resource('orders', AdminOrdersController::class);
+        Route::resource('menus', AdminMenusController::class,['only' =>[ 'index', 'store', 'update', 'show']]);
+        Route::resource('drivers', AdminDriversController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('order-types', AdminOrderTypesController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('orders', AdminOrdersController::class,['only' => ['index', 'store', 'update', 'show']]);
         Route::patch('orders/{id}/stage', [AdminOrdersController::class, 'stage']);
+
+        // Order Items (fixed path)
         Route::prefix('order-items')->group(function () {
-            Route::get('order-items', [AdminOrderItemsController::class, 'index']);
-            Route::get('order-items/{id}', [AdminOrderItemsController::class, 'show']);
-            Route::patch('order-items/{id}', [AdminOrderItemsController::class, 'update']);
-            Route::delete('order-items/{id}', [AdminOrderItemsController::class, 'destroy']);
+            Route::get('/', [AdminOrderItemsController::class, 'index']); // admin/order-items
+            Route::get('/{id}', [AdminOrderItemsController::class, 'show']);
+            Route::patch('/{id}', [AdminOrderItemsController::class, 'update']);
+            Route::delete('/{id}', [AdminOrderItemsController::class, 'destroy']);
         });
-        Route::resource('payments', AdminPaymentsController::class);
-        Route::resource('payment-types', AdminPaymentTypesController::class);
-        Route::resource('promotions', AdminPromotionsController::class);
-        Route::resource('menu-promotions', AdminMenuPromotionsController::class);
-        Route::resource('menu-addons', AdminMenuAddonsController::class);
-        Route::resource('stages', AdminStagesController::class);
-        Route::resource('statuses', AdminStatusesController::class);
-        Route::resource('users', AdminUsersController::class);
+
+        Route::resource('payments', AdminPaymentsController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('payment-types', AdminPaymentTypesController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('promotions', AdminPromotionsController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('menu-promotions', AdminMenuPromotionsController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('menu-addons', AdminMenuAddonsController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('stages', AdminStagesController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('statuses', AdminStatusesController::class,['only' => ['index', 'store', 'update', 'show']]);
+        Route::resource('variants', AdminVariantsController::class,['only' => ['index', 'store', 'update', 'show']]);
+
+        // Users management
         Route::prefix('users')->group(function () {
             Route::get('/', [AdminUsersController::class, 'index']);
-            Route::get('{id}', [AdminUsersController::class, 'show']);
-            Route::patch('{id}/block', [AdminUsersController::class, 'block']);
-            Route::patch('{id}/unblock', [AdminUsersController::class, 'unblock']);
+            Route::get('/{id}', [AdminUsersController::class, 'show']);
+            Route::patch('/{id}/block', [AdminUsersController::class, 'block']);
+            Route::patch('/{id}/unblock', [AdminUsersController::class, 'unblock']);
         });
-        Route::resource('variants', AdminVariantsController::class);
 
+        // Logout
         Route::post('/logout', [AdminController::class,'logout']);
-
     });
-
 });
-
-
-
-
-
-

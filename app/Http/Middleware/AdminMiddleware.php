@@ -4,7 +4,6 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class AdminMiddleware
 {
@@ -13,11 +12,16 @@ class AdminMiddleware
      *
      * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
      */
-    public function handle(Request $request, Closure $next): Response
+    public function handle($request, Closure $next)
     {
-        if (!auth('admin')->check()) {
-            return response()->json(['success'=>false,'message'=>'Unauthorized'], 403);
+        $response = $next($request);
+
+        $user = $request->user('admin-api');
+
+        if( !$user  ) {
+            return response()->json(["message"=> "Access Denied. Admins only."], 403);
         }
-        return $next($request);
+        return $response;
+
     }
 }

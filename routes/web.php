@@ -10,3 +10,4 @@ Route::get('/', function () {
 Route::get('/swagger-ui', function () {
     return redirect('/api/documentation');
 });
+
