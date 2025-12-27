@@ -24,4 +24,4 @@ class AdminMiddleware
         return $response;
 
     }
-}
+}   

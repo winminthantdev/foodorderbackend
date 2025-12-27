@@ -6,7 +6,6 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Route::get('/swagger-ui', function () {
     return redirect('/api/documentation');
 });
