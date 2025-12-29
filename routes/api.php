@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\UserController;
 use Illuminate\Support\Facades\Route;
 
 // Public Controllers
@@ -39,12 +40,6 @@ use App\Http\Controllers\Api\Admin\AdminStatusesController;
 
 Route::prefix('v1')->group(function () {
 
-    Route::middleware(['auth:sanctum', 'admin'])
-    ->get('/api/v1/admin/test', fn() => response()->json(['message' => 'Welcome Admin']));
-
-Route::middleware(['auth:sanctum', 'user'])
-    ->get('/api/v1/user/test', fn() => response()->json(['message' => 'Welcome User']));
-
 
     // =======================
     // PUBLIC ROUTES
@@ -57,14 +52,16 @@ Route::middleware(['auth:sanctum', 'user'])
     Route::get('/drivers/{id}', [DriversController::class, 'show']);
 
     // =======================
-    // ADMIN AUTH
-    // =======================
-    Route::post('admin/login', [AdminController::class,'login']);
-
-    // =======================
     // USER ROUTES (LOGIN REQUIRED)
     // =======================
+    Route::post('user/login', [UserController::class,'login']);
+    Route::post('user/register', [UserController::class, 'register']);
+
+
     Route::middleware(['auth:sanctum', 'user'])->prefix('user')->as('user.')->group(function () {
+
+        Route::post('/logout', [UserController::class, 'logout']);
+
 
         // Profile
         Route::get('/profile', [UserInfosController::class, 'show']);
@@ -88,6 +85,8 @@ Route::middleware(['auth:sanctum', 'user'])
     // =======================
     // ADMIN ROUTES (ADMIN ONLY)
     // =======================
+    Route::post('admin/login', [AdminController::class,'login']);
+
 
     Route::middleware(['auth:sanctum','admin'])->prefix('admin')->as('admin.')->group(function () {
 

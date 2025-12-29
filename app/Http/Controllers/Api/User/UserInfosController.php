@@ -56,10 +56,10 @@ class UserInfosController extends Controller
      */
 
 
-    public function show()
+    public function show(Request $request)
     {
-        // $userId = auth()->user();
-        $userId = 2;
+        $user = $request->user();
+        $userId = $user->id;
 
         $userinfo = Userinfo::where('user_id', $userId)->first();
 
@@ -166,7 +166,7 @@ class UserInfosController extends Controller
     public function store(Request $request)
     {
         // $userId = auth()->id();
-        $userId = 2;
+        $userId = 1;
 
         if (Userinfo::where('user_id', $userId)->exists()) {
             return response()->json([
