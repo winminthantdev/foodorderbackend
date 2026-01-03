@@ -38,7 +38,7 @@ class UserController extends Controller
 
             return response()->json([
                 'message' => 'Registered successfully',
-                'user' => UserResource::collection($user),
+                'user' => new UserResource($user),
             ], 201);
 
         }catch(\Exception $e){
@@ -86,14 +86,14 @@ class UserController extends Controller
 
             return response()->json([
                 'token' => $token,
-                'user' => UserResource::collection($user),
+                'user' => new UserResource($user),
             ]);
 
         }catch(\Exception $e){
             // Handle other server errors
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to  register user',
+                'message' => 'Failed to  login user',
                 'error' => $e->getMessage(),
             ], 500);
         }
