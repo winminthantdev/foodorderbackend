@@ -61,19 +61,29 @@ class UserInfosController extends Controller
         $user = $request->user();
         $userId = $user->id;
 
-        $userinfo = Userinfo::where('user_id', $userId)->first();
-
-        if (! $userinfo) {
+        if (!$userId) {
             return response()->json([
                 'success' => false,
-                'message' => 'User profile not found'
-            ], 404);
+                'message' => 'Unauthenticated',
+            ], 401);
+        }
+
+        $profile = Userinfo::where('user_id', $userId)->first();
+
+        if (!$profile) {
+            return response()->json([
+                'success' => true,
+                'user' => $user,
+                'profile' => null,
+            ]);
         }
 
         return response()->json([
             'success' => true,
-            'data' => new InfosResource($userinfo),
+            'user' => $user,
+            'profile' => new InfosResource($profile),
         ]);
+
     }
 
     /**
