@@ -68,7 +68,7 @@ class AdminSubCategoriesController extends Controller
     /**
      * @OA\Post(
      *     path="/v1/admin/subcategories",
-     *     summary="Create new status",
+     *     summary="Create new subcategory",
      *     tags={"SubCategories"},
      *
      *     @OA\RequestBody(
@@ -112,7 +112,7 @@ class AdminSubCategoriesController extends Controller
 
         try {
             // Create SubCategory
-            $status = SubCategory::create([
+            $subcategory = SubCategory::create([
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
                 'category_id' => $request->category_id,
@@ -122,14 +122,14 @@ class AdminSubCategoriesController extends Controller
             return response()->json([
                 'success' => true,
                 'message' => 'SubCategory created successfully',
-                'data' => new SubCategoriesResource($status),
+                'data' => new SubCategoriesResource($subcategory),
             ], 201);
 
         } catch (\Exception $e) {
             // Handle other server errors
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create status',
+                'message' => 'Failed to create subcategory',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -138,7 +138,7 @@ class AdminSubCategoriesController extends Controller
     /**
      * @OA\Put(
      *     path="/v1/admin/subcategories/{id}",
-     *     summary="Update a status",
+     *     summary="Update a subcategory",
      *     tags={"SubCategories"},
      *
      *     @OA\Parameter(
@@ -212,7 +212,7 @@ class AdminSubCategoriesController extends Controller
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Failed to update status"),
+     *             @OA\Property(property="message", type="string", example="Failed to update subcategory"),
      *             @OA\Property(property="error", type="string", example="SQLSTATE error details")
      *         )
      *     )
@@ -220,10 +220,10 @@ class AdminSubCategoriesController extends Controller
      */
     public function update(Request $request, $id)
     {
-        // Find status
-        $status = SubCategory::find($id);
+        // Find subcategory
+        $subcategory = SubCategory::find($id);
 
-        if (! $status) {
+        if (! $subcategory) {
             return response()->json([
                 'success' => false,
                 'message' => 'SubCategory not found',
@@ -245,20 +245,22 @@ class AdminSubCategoriesController extends Controller
 
         try {
             // Update data
-            $status->name = $request->name;
-            $status->slug = Str::slug($request->name);
-            $status->save();
+            $subcategory->name = $request->name;
+            $subcategory->slug = Str::slug($request->name);
+            $subcategory->category_id = $request->category_id;
+            $subcategory->status_id = $request->status_id;
+            $subcategory->save();
 
             return response()->json([
                 'success' => true,
                 'message' => 'SubCategory updated successfully',
-                'data' => new SubCategoriesResource($status),
+                'data' => new SubCategoriesResource($subcategory),
             ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to update status',
+                'message' => 'Failed to update subcategory',
                 'error' => $e->getMessage(),
             ], 500);
         }
@@ -267,7 +269,7 @@ class AdminSubCategoriesController extends Controller
     /**
      * @OA\Delete(
      *     path="/v1/admin/subcategories/{id}",
-     *     summary="Delete a status",
+     *     summary="Delete a subcategory",
      *     tags={"SubCategories"},
      *
      *     @OA\Parameter(
@@ -308,7 +310,7 @@ class AdminSubCategoriesController extends Controller
      *         @OA\JsonContent(
      *
      *             @OA\Property(property="success", type="boolean", example=false),
-     *             @OA\Property(property="message", type="string", example="Failed to delete status"),
+     *             @OA\Property(property="message", type="string", example="Failed to delete subcategory"),
      *             @OA\Property(property="error", type="string", example="Server error message")
      *         )
      *     )
@@ -317,10 +319,10 @@ class AdminSubCategoriesController extends Controller
     public function destroy(string $id)
     {
         // Find SubCategory
-        $status = SubCategory::find($id);
+        $subcategory = SubCategory::find($id);
 
         // If not found → 404
-        if (! $status) {
+        if (! $subcategory) {
             return response()->json([
                 'success' => false,
                 'message' => 'SubCategory not found',
@@ -329,7 +331,7 @@ class AdminSubCategoriesController extends Controller
 
         try {
             // Delete record
-            $status->delete();
+            $subcategory->delete();
 
             return response()->json([
                 'success' => true,
@@ -339,7 +341,7 @@ class AdminSubCategoriesController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to delete status',
+                'message' => 'Failed to delete subcategory',
                 'error' => $e->getMessage(),
             ], 500);
         }

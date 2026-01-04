@@ -51,7 +51,7 @@ class SubCategoriesController extends Controller
      */
     public function index(Request $request)
     {
-        $query = SubCategory::query();
+        $query = SubCategory::query()->where('status_id', 3);
 
         // Search
         if ($request->has('search') && $request->search != '') {
@@ -59,17 +59,10 @@ class SubCategoriesController extends Controller
         }
 
         // Pagination
-        $perPage = $request->get('per_page', 10);
-        $subcategories = $query->paginate($perPage);
+        $subcategories = $query->get();
 
         return response()->json([
-            'data' => SubCategoriesResource::collection($subcategories),
-            'meta' => [
-                'current_page' => $subcategories->currentPage(),
-                'total_page' => $subcategories->lastPage(),
-                'per_page' => $subcategories->perPage(),
-                'total' => $subcategories->total(),
-            ],
+            'data' => SubCategoriesResource::collection($subcategories)
         ], 200);
     }
 }

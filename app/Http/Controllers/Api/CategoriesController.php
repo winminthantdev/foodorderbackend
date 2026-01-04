@@ -52,30 +52,18 @@ class CategoriesController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Category::query();
+        $query = Category::query()->where('status_id', 3);
 
         // Search
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%'.$request->search.'%');
         }
 
-        // Filter example: by category type
-        if ($request->has('status_id') && $request->status_id != '') {
-            $query->where('status_id', $request->status_id);
-        }
-
         // Pagination
-        $perPage = $request->get('per_page', 10);
-        $categories = $query->paginate($perPage);
+        $categories = $query->get();
 
         return response()->json([
-            'data' => CategoriesResource::collection($categories),
-            'meta' => [
-                'current_page' => $categories->currentPage(),
-                'total_page' => $categories->lastPage(),
-                'per_page' => $categories->perPage(),
-                'total' => $categories->total(),
-            ],
+            'data' => CategoriesResource::collection($categories)
         ], 200);
     }
 
