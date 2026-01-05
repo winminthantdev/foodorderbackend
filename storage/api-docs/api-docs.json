@@ -1812,7 +1812,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "BearerAuth": []
                     }
                 ]
             },
@@ -1889,7 +1889,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "BearerAuth": []
                     }
                 ]
             }
@@ -1915,7 +1915,12 @@
                     "200": {
                         "description": "User detail"
                     }
-                }
+                },
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ]
             },
             "put": {
                 "tags": [
@@ -2000,7 +2005,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "BearerAuth": []
                     }
                 ]
             },
@@ -2030,7 +2035,7 @@
                 },
                 "security": [
                     {
-                        "sanctum": []
+                        "BearerAuth": []
                     }
                 ]
             }
@@ -4187,7 +4192,7 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Create new status",
+                "summary": "Create new subcategory",
                 "operationId": "191456d989df072d6f765ce5d1cc3a84",
                 "requestBody": {
                     "required": true,
@@ -4233,7 +4238,7 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Update a status",
+                "summary": "Update a subcategory",
                 "operationId": "0d089a7f13211b54f8f381445de9a622",
                 "parameters": [
                     {
@@ -4367,7 +4372,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Failed to update status"
+                                            "example": "Failed to update subcategory"
                                         },
                                         "error": {
                                             "type": "string",
@@ -4385,7 +4390,7 @@
                 "tags": [
                     "SubCategories"
                 ],
-                "summary": "Delete a status",
+                "summary": "Delete a subcategory",
                 "operationId": "e4e231956c92d79e11f429e6d3efaa0a",
                 "parameters": [
                     {
@@ -4451,7 +4456,7 @@
                                         },
                                         "message": {
                                             "type": "string",
-                                            "example": "Failed to delete status"
+                                            "example": "Failed to delete subcategory"
                                         },
                                         "error": {
                                             "type": "string",
@@ -6692,6 +6697,21 @@
         {
             "name": "Promotions (User)",
             "description": "Promotions (User)"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "BearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT",
+                "description": "Enter token in format: Bearer {token}"
+            }
+        }
+    },
+    "security": [
+        {
+            "BearerAuth": []
         }
     ]
 }

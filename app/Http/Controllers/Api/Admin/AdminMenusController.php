@@ -17,7 +17,7 @@ class AdminMenusController extends Controller
      *     path="/v1/admin/menus",
      *     summary="Get all menus",
      *     tags={"Menus (Admin)"},
-     *     security={{"sanctum":{}}},
+     *     security={{"BearerAuth":{}}},
      *
      *     @OA\Parameter(
      *         name="search",
@@ -80,7 +80,7 @@ class AdminMenusController extends Controller
      *     path="/v1/admin/menus",
      *     summary="Create payment type",
      *     tags={"Menus (Admin)"},
-     *     security={{"sanctum":{}}},
+     *     security={{"BearerAuth":{}}},
      *
      *     @OA\RequestBody(
      *         required=true,
@@ -180,6 +180,7 @@ class AdminMenusController extends Controller
      *     path="/v1/admin/menus/{id}",
      *     summary="Get menu details",
      *     tags={"Menus (Admin)"},
+     *     security={{"BearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
@@ -204,7 +205,7 @@ class AdminMenusController extends Controller
      *     path="/v1/admin/menus/{id}",
      *     summary="Update payment type",
      *     tags={"Menus (Admin)"},
-     *     security={{"sanctum":{}}},
+     *     security={{"BearerAuth":{}}},
      *
      *     @OA\Parameter(
      *         name="id",
@@ -321,7 +322,7 @@ class AdminMenusController extends Controller
      *     path="/v1/admin/menus/{id}",
      *     summary="Delete payment type",
      *     tags={"Menus (Admin)"},
-     *     security={{"sanctum":{}}},
+     *     security={{"BearerAuth":{}}},
      *
      *     @OA\Parameter(
      *         name="id",
