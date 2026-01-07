@@ -32,6 +32,22 @@ class Menu extends Model
             ->withTimestamps();
     }
 
+
+    public function activePromotion()
+    {
+        return $this->promotions()
+            ->where('status_id', 1)
+            ->where(function ($q) {
+                $q->whereNull('start_date')
+                ->orWhere('start_date', '<=', now());
+            })
+            ->where(function ($q) {
+                $q->whereNull('end_date')
+                ->orWhere('end_date', '>=', now());
+            })
+            ->first();
+    }
+
     public function addons()
     {
         return $this->belongsToMany(Addon::class, 'menu_addons')
@@ -63,5 +79,12 @@ class Menu extends Model
     public function ratings()
     {
         return $this->morphMany(Rateable::class, 'rateable');
+    }
+
+    public function getImageAttribute($value)
+    {
+        return $value
+            ? url('/' . $value)
+            : null;
     }
 }

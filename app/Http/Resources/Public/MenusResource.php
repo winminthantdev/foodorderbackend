@@ -14,6 +14,12 @@ class MenusResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $promotion = $this->activePromotion();
+
+        $discountPercent = $promotion ? ($promotion->pivot->custom_discount_value ?? $promotion->discount_percent) : null;
+
+        $finalPrice = $promotion ? $this->price - ($this->price * $discountPercent / 100) : $this->price;
+
         return [
             "id"=> $this->id,
             "name"=> $this->name,
@@ -21,6 +27,7 @@ class MenusResource extends JsonResource
             "image"=> $this->image,
             "description"=> $this->description,
             "price"=> $this->price,
+            'final_price' => round($finalPrice),
             "rating"=> $this->rating,
             "subcatrgory"=>[
                 "id"=> $this->subcategory->id,
@@ -36,6 +43,14 @@ class MenusResource extends JsonResource
                 "id"=> $this->status->id,
                 "name"=> $this->status->name,
             ],
+            "promotion" => $promotion ? [
+                'id' => $promotion -> id,
+                'isActive' => true,
+                'title' => $promotion->title,
+                "discountPercent" => $discountPercent,
+                "max_discount" => $promotion->max_discount,
+                "min_order_amount" => $promotion->min_order_amount,
+            ]: null,
             "created_at"=> $this->created_at->format("d m Y"),
             "updated_at"=> $this->updated_at->format("d m Y"),
         ];

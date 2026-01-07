@@ -99,7 +99,7 @@ class AdminPromotionsController extends Controller
      *            @OA\Property(property="min_order_amount", type="number", format="float", example=100.0),
      *           @OA\Property(property="start_date", type="string", format="date", example="2025-06-01"),
      *           @OA\Property(property="end_date", type="string", format="date", example="2025-06-30"),
-     *           @OA\Property(property="status_id", type="integer", example=3)
+     *           @OA\Property(property="status_id", type="integer", example=1)
      *
      *         )
      *     ),
@@ -127,7 +127,7 @@ class AdminPromotionsController extends Controller
             'min_order_amount' => 'nullable|numeric|min:0',
             'start_date' => 'required|date',
             'end_date' => 'required|date|after_or_equal:start_date',
-            'status_id' => 'required|in:3,4',
+            'status_id' => 'required|in:1,2',
         ]);
 
         // If validation fails
