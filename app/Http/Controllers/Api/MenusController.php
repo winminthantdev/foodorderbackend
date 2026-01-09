@@ -48,19 +48,24 @@ class MenusController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Menu::query();
+        $query = Menu::query()->with(['category', 'subcategory', 'status', 'promotions']);
 
         // Search
         if ($request->has('search') && $request->search != '') {
             $query->where('name', 'like', '%'.$request->search.'%');
         }
 
-        // Filter example: by menu type
         if ($request->has('status_id') && $request->status_id != '') {
             $query->where('status_id', $request->status_id);
         }
 
-        // Pagination
+        // Filter by promotion properly
+        if ($request->has('is_promotion') && $request->is_promotion == 'true') {
+            $query->whereHas('promotions', function($q) {
+                $q->active(); 
+            });
+        }
+
         $perPage = $request->get('per_page', 10);
         $menus = $query->paginate($perPage);
 
@@ -75,28 +80,30 @@ class MenusController extends Controller
         ], 200);
     }
 
-
-      /**
+    /**
      * @OA\Get(
      *     path="/v1/menus/{id}",
      *     summary="Get menu details",
      *     tags={"Menus (Public)"},
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *
      *         @OA\Schema(type="integer")
      *     ),
+     *
      *     @OA\Response(response=200, description="User detail")
      * )
      */
-
-    public function show(Request $request){
+    public function show(Request $request)
+    {
         $menu = Menu::findOrFail($request->id);
 
         return response()->json([
-            'success'=> true,
-            'data'=> new MenusResource($menu),
+            'success' => true,
+            'data' => new MenusResource($menu),
         ]);
     }
 }
