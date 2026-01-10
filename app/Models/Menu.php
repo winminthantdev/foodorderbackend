@@ -10,6 +10,10 @@ class Menu extends Model
     use HasFactory;
 
     protected $table = 'menus';
+    protected $casts = [
+        'image' => 'array',
+    ];
+
 
     protected $primaryKey = 'id';
 

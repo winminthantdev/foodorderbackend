@@ -29,7 +29,7 @@ class MenusResource extends JsonResource
             "price"=> $this->price,
             'final_price' => round($finalPrice),
             "rating"=> $this->rating,
-            "subcatrgory"=>[
+            "subcategory"=>[
                 "id"=> $this->subcategory->id,
                 "name"=> $this->subcategory->name,
                 "slug"=> $this->subcategory->slug,

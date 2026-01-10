@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('slug')->nullable();
-            $table->string('image')->nullable();
+            $table->json('images')->nullable();
             $table->string('description')->nullable();
             $table->decimal('price',10,2);
             $table->tinyInteger('rating')->default(5);

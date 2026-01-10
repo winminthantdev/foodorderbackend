@@ -92,7 +92,7 @@ class AdminMenusController extends Controller
      *                 @OA\Schema(
      *                     required={"name", "price", "rating", "subcategory_id", "category_id", "status_id"},
      *                     @OA\Property(property="name", type="string", example="Shan Noodles"),
-     *                     @OA\Property(property="image", type="string", format="binary"),
+     *                     @OA\Property(property="images", type="string", format="binary"),
      *                    @OA\Property(property="description", type="string", example="Delicious Shan Noodles"),
      *                    @OA\Property(property="price", type="number", format="float", example=5.99),
      *                    @OA\Property(property="rating", type="number", format="float", example=4.5),
@@ -116,7 +116,7 @@ class AdminMenusController extends Controller
         // Validate input
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:menus,name',
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'nullable|string|max:1000',
             'price' => 'nullable|numeric|min:0',
             'rating' => 'nullable|numeric|between:0,5',
@@ -136,21 +136,23 @@ class AdminMenusController extends Controller
 
         try {
 
-            $imagePath = null;
-            // Single Image Upload
-            if ($request->hasFile('image')) {
+            $images = [];
 
-                $file = $request->file('image');
-                $newfilename = uniqid().'_'.time().'.'.$file->getClientOriginalExtension();
-                $file->move(public_path('assets/images/menus/'), $newfilename);
-                $imagePath = 'assets/images/menus/'.$newfilename;
+            // Multi Image Upload
+            if ($request->hasFile('images')) {
+                foreach($request->file('images') as $file){
+                    $newfilename = uniqid().'_'.time().'.'.$file->getClientOriginalExtension();
+                    $file->move(public_path('assets/images/menus/'), $newfilename);
+                    $images[] = 'assets/images/menus/'.$newfilename;
+                }
             }
+
 
             // Create Menu
             $menu = Menu::create([
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
-                'image' => $imagePath,
+                'image' => $images,
                 'description'=> $request->description,
                 'price'=> $request->price,
                 'rating'=> $request->rating,
