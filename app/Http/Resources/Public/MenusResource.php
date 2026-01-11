@@ -24,7 +24,7 @@ class MenusResource extends JsonResource
             "id"=> $this->id,
             "name"=> $this->name,
             "slug"=> $this->slug,
-            "image"=> $this->image,
+            "images"=> $this->images ?? [],
             "description"=> $this->description,
             "price"=> $this->price,
             'final_price' => round($finalPrice),

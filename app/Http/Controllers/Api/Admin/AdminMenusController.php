@@ -227,7 +227,7 @@ class AdminMenusController extends Controller
      *                 @OA\Schema(
      *                     required={"name", "price", "rating", "subcategory_id", "category_id", "status_id"},
      *                     @OA\Property(property="name", type="string", example="Shan Noodles"),
-     *                     @OA\Property(property="image", type="string", format="binary"),
+     *                     @OA\Property(property="images", type="string", format="binary"),
      *                    @OA\Property(property="description", type="string", example="Delicious Shan Noodles"),
      *                    @OA\Property(property="price", type="number", format="float", example=5.99),
      *                    @OA\Property(property="rating", type="number", format="float", example=4.5),
@@ -259,7 +259,7 @@ class AdminMenusController extends Controller
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|string|max:255|unique:menus,name,'.$id,
-            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'nullable|string|max:1000',
             'price' => 'nullable|numeric|min:0',
             'rating' => 'nullable|numeric|between:0,5',
@@ -279,8 +279,8 @@ class AdminMenusController extends Controller
 
         try {
 
-            if($request->hasFile('image') ) {
-                $oldIcon = $menu->image;
+            if($request->hasFile('images') ) {
+                $oldIcon = $menu->images;
 
                 if(File::exists(public_path($oldIcon))) {
                     File::delete(public_path($oldIcon));

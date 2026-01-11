@@ -11,7 +11,7 @@ class Menu extends Model
 
     protected $table = 'menus';
     protected $casts = [
-        'image' => 'array',
+        'images' => 'array',
     ];
 
 
@@ -20,7 +20,7 @@ class Menu extends Model
     protected $fillable = [
         'name',
         'slug',
-        'image',
+        'images',
         'description',
         'price',
         'rating',
