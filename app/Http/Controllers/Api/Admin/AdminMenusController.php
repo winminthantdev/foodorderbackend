@@ -116,7 +116,8 @@ class AdminMenusController extends Controller
         // Validate input
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255|unique:menus,name',
-            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'nullable|string|max:1000',
             'price' => 'nullable|numeric|min:0',
             'rating' => 'nullable|numeric|between:0,5',
@@ -152,7 +153,7 @@ class AdminMenusController extends Controller
             $menu = Menu::create([
                 'name' => $request->name,
                 'slug' => Str::slug($request->name),
-                'image' => $images,
+                'images' => $images,
                 'description'=> $request->description,
                 'price'=> $request->price,
                 'rating'=> $request->rating,
@@ -248,18 +249,16 @@ class AdminMenusController extends Controller
     {
         // Find menu
         $menu = Menu::find($id);
+        if (!$menu) return response()->json(['success' => false], 404);
 
-        if (! $menu) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Menu not found',
-            ], 404);
-        }
+        // 1. Get current images
+        $images = is_array($menu->image) ? $menu->image : [];
 
         // Validation
         $validator = Validator::make($request->all(), [
             'name' => 'nullable|string|max:255|unique:menus,name,'.$id,
-            'images' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'images' => 'nullable|array',
+            'images.*' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'description' => 'nullable|string|max:1000',
             'price' => 'nullable|numeric|min:0',
             'rating' => 'nullable|numeric|between:0,5',
@@ -279,17 +278,28 @@ class AdminMenusController extends Controller
 
         try {
 
-            if($request->hasFile('images') ) {
-                $oldIcon = $menu->images;
+            if ($request->hasFile('replacement_images') && $request->has('replace_indices')) {
+                $files = $request->file('replacement_images');
+                $indices = $request->replace_indices;
 
-                if(File::exists(public_path($oldIcon))) {
-                    File::delete(public_path($oldIcon));
+                foreach ($indices as $key => $index) {
+                    // Check if a file exists for this specific index and the index is valid in DB
+                    if (isset($files[$key]) && isset($images[$index])) {
+
+                        // Delete OLD physical file
+                        if (File::exists(public_path($images[$index]))) {
+                            File::delete(public_path($images[$index]));
+                        }
+
+                        // Upload NEW file
+                        $file = $files[$key];
+                        $filename = uniqid().'_'.time().'.'.$file->getClientOriginalExtension();
+                        $file->move(public_path('assets/images/menus/'), $filename);
+
+                        // SWAP the path at that specific index
+                        $images[$index] = 'assets/images/menus/'.$filename;
+                    }
                 }
-                // Single Image Upload
-                $file = $request->file('image');
-                $newfilename = uniqid().'_'.time().'.'.$file->getClientOriginalExtension();
-                $file->move(public_path('assets/images/menus/'), $newfilename);
-                $menu->image = 'assets/images/menus/'.$newfilename;
             }
 
 
@@ -297,6 +307,7 @@ class AdminMenusController extends Controller
             $menu->name = $request->name;
             $menu->slug = Str::slug($request->name);
             $menu->description = $request->description;
+            $menu->images = array_values($images);
             $menu->price = $request->price;
             $menu->rating = $request->rating;
             $menu->subcategory_id = $request->subcategory_id;

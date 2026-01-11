@@ -62,7 +62,7 @@ class MenusController extends Controller
         // Filter by promotion properly
         if ($request->has('is_promotion') && $request->is_promotion == 'true') {
             $query->whereHas('promotions', function($q) {
-                $q->active(); 
+                $q->active();
             });
         }
 
@@ -104,6 +104,20 @@ class MenusController extends Controller
         return response()->json([
             'success' => true,
             'data' => new MenusResource($menu),
+        ]);
+    }
+
+    public function relatedMenus(Request $request){
+        $menu = Menu::findOrFail($request->id);
+
+        $relatedMenus = Menu::where('subcategory_id', $menu->subcategory_id)
+            ->where('id', '!=', $menu->id)
+            ->limit(10)
+            ->get();
+
+        return response()->json([
+            'success' => true,
+            'data' => MenusResource::collection($relatedMenus),
         ]);
     }
 }
