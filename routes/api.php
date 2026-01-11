@@ -48,7 +48,7 @@ Route::prefix('v1')->group(function () {
     Route::get('/subcategories', [SubCategoriesController::class, 'index']);
     Route::get('/menus', [MenusController::class, 'index']);
     Route::get('/menus/{id}', [MenusController::class, 'show']);
-    Route::get('/menus/{id}/related', [MenusController::class, 'show']);
+    Route::get('/menus/{id}/related', [MenusController::class, 'relatedMenus']);
     Route::get('/drivers', [DriversController::class, 'index']);
     Route::get('/drivers/{id}', [DriversController::class, 'show']);
 

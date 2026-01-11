@@ -112,7 +112,6 @@ class MenusController extends Controller
 
         $relatedMenus = Menu::where('subcategory_id', $menu->subcategory_id)
             ->where('id', '!=', $menu->id)
-            ->limit(10)
             ->get();
 
         return response()->json([
