@@ -48,15 +48,30 @@ class MenusController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Menu::query()->with(['category', 'subcategory', 'status', 'promotions']);
+        $query = Menu::query()->with(['category:id,name,slug', 'subcategory:id,name,slug', 'status:id,name', 'promotions']);
 
         // Search
-        if ($request->has('search') && $request->search != '') {
+        if ($request->filled('search')) {
             $query->where('name', 'like', '%'.$request->search.'%');
         }
 
-        if ($request->has('status_id') && $request->status_id != '') {
+        // Filter by Status
+        if ($request->filled('status_id')) {
             $query->where('status_id', $request->status_id);
+        }
+
+        // Filter by Category ID
+        if ($request->filled('category')) {
+            $query->whereHas('category', function($q) use ($request) {
+                $q->where('slug', $request->category); // or 'id'
+            });
+        }
+
+        // Filter by Subcategory ID
+        if ($request->filled('subcategory')) {
+            $query->whereHas('subcategory', function($q) use ($request) {
+                $q->where('slug', $request->subcategory);
+            });
         }
 
         // Filter by promotion properly
