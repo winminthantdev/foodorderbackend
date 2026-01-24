@@ -52,6 +52,16 @@ class Menu extends Model
             ->first();
     }
 
+    public function isBestSeller()
+    {
+        return ($this->orderItems()->count() ?? 0) > 50;
+    }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class);
+    }
+
     public function addons()
     {
         return $this->belongsToMany(Addon::class, 'menu_addons')

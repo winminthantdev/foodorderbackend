@@ -81,6 +81,11 @@ class MenusController extends Controller
             });
         }
 
+        // Filter by bestseller properly
+        if ($request->boolean('is_bestseller')) {
+            $query->withCount('orderItems')->orderByDesc('order_items_count');
+        }
+
         $perPage = $request->get('per_page', 10);
         $menus = $query->paginate($perPage);
 
