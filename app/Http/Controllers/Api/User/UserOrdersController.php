@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreOrderRequest;
 use App\Http\Resources\User\OrdersResource;
 use App\Models\Order;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
 
 class UserOrdersController extends Controller
 {
@@ -51,8 +51,9 @@ class UserOrdersController extends Controller
      */
     public function index(Request $request)
     {
-        // $query = Order::where('user_id', auth()->id);
-        $query = Order::where('user_id', 2);
+        $userId = auth()->id();
+
+        $query = Order::where('user_id', $userId);
 
         if ($request->filled('search')) {
             $query->whereHas('user', function ($q) use ($request) {
@@ -117,55 +118,58 @@ class UserOrdersController extends Controller
      *     )
      * )
      */
-    public function store(Request $request)
+    public function store(StoreOrderRequest $request)
     {
-        // $userId = auth()->id();
-        $userId = 2;
+        try {
+            $order = \DB::transaction(function () use ($request) {
+                $order = Order::create([
+                    'user_id' => auth()->id(),
+                    'ordertype_id' => $request->ordertype_id,
+                    'paymenttype_id' => $request->paymenttype_id,
+                    'driver_id' => $request->driver_id,
+                    'address_id' => $request->address_id,
+                    'subtotal' => $request->subtotal,
+                    'discount' => $request->discount,
+                    'delivery_fee' => $request->delivery_fee,
+                    'service_fee' => $request->service_fee,
+                    'total' => $request->total,
+                    'transaction_id' => $request->transaction_id,
+                    'order_note' => $request->order_note,
+                    'scheduled_at' => $request->scheduled_at,
+                    'stage_id'       => 1,
+                ]);
 
-        $validator = Validator::make($request->all(), [
-            'ordertype_id' => 'required|exists:ordertypes,id',
-            'paymenttype_id' => 'required|exists:paymenttypes,id',
-            'driver_id' => 'nullable|exists:drivers,id',
-            'address_id' => 'nullable|exists:addresses,id',
-            'subtotal' => 'required|numeric|min:0',
-            'discount' => 'required|numeric|min:0',
-            'delivery_fee' => 'required|numeric|min:0',
-            'service_fee' => 'required|numeric|min:0',
-            'total' => 'required|numeric|min:0',
-            'transaction_id' => 'nullable|string',
-            'order_note' => 'nullable|string',
-            'scheduled_at' => 'nullable|date',
-        ]);
+                foreach ($request->items as $item) {
+                    $menu = \App\Models\Menu::findOrFail($item['menu_id']);
 
-        if ($validator->fails()) {
+                    if (!$menu) {
+                        throw new \Exception("Menu item with ID {$item['menu_id']} not found.");
+                    }
+
+                    $order->items()->create([
+                        'menu_id'  => $item['menu_id'],
+                        'quantity' => $item['quantity'],
+                        'price'    => $item['unit_price'],
+                        'discount' => $item['discount'] ?? 0,
+                    ]);
+                }
+
+                return $order;
+            });
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Order created successfully',
+                'data' => new OrdersResource($order->load('items')),
+            ], 201);
+
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation failed',
-                'errors' => $validator->errors(),
-            ], 422);
+                'message' => 'Something went wrong while processing your order.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        $order = Order::create([
-            'user_id'=> $userId,
-            "ordertype_id"=>  $request->ordertype_id,
-            "paymenttype_id"=>  $request->paymenttype_id,
-            "driver_id"=>  $request->driver_id,
-            "address_id"=>  $request->address_id,
-            "subtotal"=>  $request->subtotal,
-            "discount"=>  $request->discount,
-            "delivery_fee"=>  $request->delivery_fee,
-            "service_fee"=>  $request->service_fee,
-            "total"=>  $request->total,
-            "transaction_id"=>  $request->transaction_id,
-            "order_note" => $request->order_note,
-            "scheduled_at" => $request->scheduled_at,
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Order created successfully',
-            'data' => new OrdersResource($order),
-        ], 201);
     }
 
     /**
@@ -198,5 +202,4 @@ class UserOrdersController extends Controller
 
         return response()->json(['data' => new OrdersResource($order)]);
     }
-
 }
